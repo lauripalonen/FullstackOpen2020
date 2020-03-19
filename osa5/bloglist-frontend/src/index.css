@@ -1,0 +1,21 @@
+.notification {
+  height: 1em;
+  background-color: lightgrey;
+  color: green;
+  padding: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+}
+
+.error {
+  height: 1em;
+  background-color: lightgrey;
+  color: red;
+  padding: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+}
+
+.notification-placeholder {
+  height: 3em;
+}
