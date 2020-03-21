@@ -1,5 +1,4 @@
 .notification {
-  height: 1em;
   background-color: lightgrey;
   color: green;
   padding: 1em;
@@ -8,7 +7,6 @@
 }
 
 .error {
-  height: 1em;
   background-color: lightgrey;
   color: red;
   padding: 1em;
@@ -18,4 +16,10 @@
 
 .notification-placeholder {
   height: 3em;
+}
+
+.blog-item {
+  padding: 0.5em;
+  border: 0.1em solid black;
+  margin: 0.2em;
 }
