@@ -1,6 +1,6 @@
 import React from 'react'
 
-const notificationBar = ({ notification }) => {
+const NotificationBar = ({ notification }) => {
   if (!notification) {
     return <div></div>
   }
@@ -11,4 +11,4 @@ const notificationBar = ({ notification }) => {
   )
 }
 
-export default notificationBar
+export default NotificationBar

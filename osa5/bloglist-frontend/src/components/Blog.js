@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, updateList, removeFromList, user}) => {
+const Blog = ({ blog, updateList, removeFromList, user }) => {
   const [simpleDisplay, setSimpleDisplay] = useState(true)
 
   const buttonText = () => (simpleDisplay ? 'view' : 'hide')

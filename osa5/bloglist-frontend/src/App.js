@@ -34,7 +34,6 @@ const App = () => {
 
       blogService.setToken(user.token)
       setUser(user)
-      console.log(user)
       setUsername('')
       setPassword('')
       setNotification(null)
