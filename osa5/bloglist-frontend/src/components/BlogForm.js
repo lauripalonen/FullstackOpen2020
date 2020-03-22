@@ -37,14 +37,7 @@ const BlogForm = ({
   }
 
 
-  const addBlog = async (event) => {
-    event.preventDefault()
-
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url,
-    }
+  const addBlog = async (blogObject) => {
 
     try {
       const newBlog = await blogService.create(blogObject)
@@ -90,6 +83,13 @@ const BlogForm = ({
     setBlogs(updatedList)
   }
 
+  const likeBlog = async (blog, event) => {
+    event.preventDefault()
+    const changedBlog = { ...blog, likes: blog.likes + 1 }
+    blogService.update(blog.id, changedBlog)
+    updateList(changedBlog)
+  }
+
 
   return (
     <div>
@@ -105,6 +105,7 @@ const BlogForm = ({
         updateList={updateList}
         removeFromList={removeFromList}
         user={user}
+        likeBlog={likeBlog}
       />)}
     </div>
   )
