@@ -52,14 +52,14 @@ const BlogForm = ({
       resetNotification()
 
     } catch (exception) {
-      setNotification({ type: 'error', msg: exception })
+      setNotification({ type: 'error', msg: exception.message })
       resetNotification()
     }
     resetFormFields()
   }
 
   const newBlogForm = () => (
-    <Togglable buttonLabel='new blog' ref={createNewFormRef}>
+    <Togglable buttonId='new-blog-button' buttonLabel='new blog' ref={createNewFormRef}>
       <CreateNewForm
         addBlog={addBlog}
         title={title}
@@ -99,14 +99,16 @@ const BlogForm = ({
         {user.name} logged in <button onClick={handleLogout}>log out</button>
       </div>
       {newBlogForm()}
-      {blogs.map(blog => <Blog
-        key={blog.id}
-        blog={blog}
-        updateList={updateList}
-        removeFromList={removeFromList}
-        user={user}
-        likeBlog={likeBlog}
-      />)}
+      <div id="blog-list">
+        {blogs.map(blog => <Blog
+          key={blog.id}
+          blog={blog}
+          updateList={updateList}
+          removeFromList={removeFromList}
+          user={user}
+          likeBlog={likeBlog}
+        />)}
+      </div>
     </div>
   )
 }

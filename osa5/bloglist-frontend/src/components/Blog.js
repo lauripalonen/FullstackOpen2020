@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, updateList, removeFromList, user, likeBlog }) => {
+const Blog = ({ blog, removeFromList, user, likeBlog }) => {
   const [simpleDisplay, setSimpleDisplay] = useState(true)
 
   const buttonText = () => (simpleDisplay ? 'view' : 'hide')
@@ -22,15 +22,15 @@ const Blog = ({ blog, updateList, removeFromList, user, likeBlog }) => {
   const detailedDisplay = () => (
     <div>
       {blog.url} <br />
-      likes: {blog.likes} <button onClick={(e) => likeBlog(blog, e)}>like</button><br />
+      likes: {blog.likes} <button id='like-button' onClick={(e) => likeBlog(blog, e)}>like</button><br />
       {blog.user.username} <br />
-      {blog.user.username === user.username ? <button onClick={removeBlog}>remove</button> : null}
+      {blog.user.username === user.username ? <button id='remove-blog-button' onClick={removeBlog}>remove</button> : null}
     </div>
   )
 
   return (
     <div className='blog-item'>
-      {blog.title} {blog.author} <button onClick={handleButtonClick}>{buttonText()}</button>
+      {blog.title} {blog.author} <button id="display-toggle-button" onClick={handleButtonClick}>{buttonText()}</button>
       {simpleDisplay ? null : detailedDisplay()}
     </div>
   )
