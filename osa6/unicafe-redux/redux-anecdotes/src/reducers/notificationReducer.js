@@ -1,25 +1,23 @@
 const initialState = ''
 
-export const newNotification = (notification) => {
-  return {
-    type: 'NEW_NOTIFICATION',
-    data: { notification }
-  }
-}
+export const setNotification = (notification, time) => {
+  return async dispatch => {
+    const dispatched = await dispatch({
+      type: 'SET_NOTIFICATION',
+      notification
+    })
 
-export const resetNotification = () => {
-  return {
-    type: 'RESET_NOTIFICATION',
-    data: ''
+    const reset = { ...dispatched, notification: '' }
+    setTimeout(() => {
+      dispatch(reset)
+    }, time)
   }
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'NEW_NOTIFICATION':
-      return action.data.notification
-    case 'RESET_NOTIFICATION':
-      return action.data
+    case 'SET_NOTIFICATION':
+      return action.notification
     default:
       return state
   }
