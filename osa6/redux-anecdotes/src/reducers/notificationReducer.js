@@ -1,17 +1,31 @@
 const initialState = ''
 
+let currentTimeout;
+
+const resetTimeout = () => {
+  if (currentTimeout) {
+    clearTimeout(currentTimeout)
+    currentTimeout = null
+  }
+}
+
 export const setNotification = (notification, time) => {
   return async dispatch => {
+    resetTimeout()
+
     const dispatched = await dispatch({
       type: 'SET_NOTIFICATION',
       notification
     })
 
     const reset = { ...dispatched, notification: '' }
-    setTimeout(() => {
+
+    currentTimeout = setTimeout(() => {
       dispatch(reset)
     }, time)
+
   }
+
 }
 
 const reducer = (state = initialState, action) => {
