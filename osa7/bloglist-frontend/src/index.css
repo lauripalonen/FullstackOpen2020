@@ -1,0 +1,25 @@
+.notification {
+  background-color: lightgrey;
+  color: green;
+  padding: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+}
+
+.error {
+  background-color: lightgrey;
+  color: red;
+  padding: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+}
+
+.notification-placeholder {
+  height: 3em;
+}
+
+.blog-item {
+  padding: 0.5em;
+  border: 0.1em solid black;
+  margin: 0.2em;
+}
