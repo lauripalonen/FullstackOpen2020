@@ -6,29 +6,23 @@ import Togglable from './Togglable'
 import blogService from '../services/blogs'
 import NotificationBar from './NotificationBar'
 
-
+import { initializeBlogs } from '../reducers/blogReducer'
 import { createNotification, createError } from '../reducers/notificationReducer'
 
 const BlogForm = ({
   user,
   handleLogout,
 }) => {
-  const [blogs, setBlogs] = useState([])
+  // const [blogs, setBlogs] = useState([])
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const notification = useSelector(state => state)
+  const notification = useSelector(state => state.notification)
+  const blogs = useSelector(state => state.blogs)
 
   const createNewFormRef = React.createRef()
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    blogService.getAll().then(blogs => {
-      blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs(blogs)
-    })
-  }, [])
 
   const resetNotification = () => {
     setTimeout(() => {
@@ -49,9 +43,10 @@ const BlogForm = ({
       const newBlog = await blogService.create(blogObject)
       createNewFormRef.current.toggleVisibility()
       const newBlogWithUser = { ...newBlog, user: { username: user.username } }
-      setBlogs(blogs.concat(newBlogWithUser))
 
-      dispatch(createNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`))
+      dispatch({ type: 'NEW_BLOG', data: newBlogWithUser })
+
+      dispatch(createNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
       resetNotification()
 
     } catch (exception) {
@@ -78,12 +73,14 @@ const BlogForm = ({
   const updateList = (changedBlog) => {
     const updatedList = blogs.map(blog => blog.id !== changedBlog.id ? blog : changedBlog)
     updatedList.sort((a, b) => b.likes - a.likes)
-    setBlogs(updatedList)
+    // setBlogs(updatedList)
+    // ADD FUNCTIONALITY TO UPDATE BLOGLIST
   }
 
   const removeFromList = (removedBlog) => {
     const updatedList = blogs.filter(blog => blog.id !== removedBlog.id)
-    setBlogs(updatedList)
+    // setBlogs(updatedList)
+    // ADD FUNCTIONALITY TO UPDATE BLOGLIST
   }
 
   const likeBlog = async (blog, event) => {

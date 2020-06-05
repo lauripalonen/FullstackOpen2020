@@ -3,8 +3,11 @@ import blogService from '../services/blogs'
 const blogReducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_NOTES':
+      action.data.sort((a,b) => b.likes - a.likes)
       return action.data
     case 'NEW_BLOG':
+      console.log('GOT REQUEST TO CREATE NEW BLOG')
+      console.log('RECEIVED DATA: ', action.data)
       return [...state, action.data]
     default:
       return state
