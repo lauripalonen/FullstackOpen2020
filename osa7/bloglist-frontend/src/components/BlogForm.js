@@ -1,74 +1,61 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Blog from './Blog'
 import CreateNewForm from './CreateNewForm'
-import Togglable from './Togglable'
 import blogService from '../services/blogs'
 import NotificationBar from './NotificationBar'
-
-import { initializeBlogs } from '../reducers/blogReducer'
-import { createNotification, createError } from '../reducers/notificationReducer'
 
 const BlogForm = ({
   user,
   handleLogout,
 }) => {
-  // const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  // const [title, setTitle] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [url, setUrl] = useState('')
 
   const notification = useSelector(state => state.notification)
   const blogs = useSelector(state => state.blogs)
 
-  const createNewFormRef = React.createRef()
-  const dispatch = useDispatch()
+  // const createNewFormRef = React.createRef()
+  // const dispatch = useDispatch()
 
-  const resetNotification = () => {
-    setTimeout(() => {
-      dispatch({ type: 'CLEAR_NOTIFICATION' })
-    }, 5000)
-  }
+  // const resetNotification = () => {
+  //   setTimeout(() => {
+  //     dispatch({ type: 'CLEAR_NOTIFICATION' })
+  //   }, 5000)
+  // }
 
-  const resetFormFields = () => {
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
+  // const resetFormFields = () => {
+  //   setTitle('')
+  //   setAuthor('')
+  //   setUrl('')
+  // }
 
 
-  const addBlog = async (blogObject) => {
+  // const addBlog = async (blogObject) => {
 
-    try {
-      const newBlog = await blogService.create(blogObject)
-      createNewFormRef.current.toggleVisibility()
-      const newBlogWithUser = { ...newBlog, user: { username: user.username } }
+  //   try {
+  //     const newBlog = await blogService.create(blogObject)
+  //     createNewFormRef.current.toggleVisibility()
+  //     const newBlogWithUser = { ...newBlog, user: { username: user.username } }
 
-      dispatch({ type: 'NEW_BLOG', data: newBlogWithUser })
+  //     dispatch({ type: 'NEW_BLOG', data: newBlogWithUser })
 
-      dispatch(createNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
-      resetNotification()
+  //     dispatch(createNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
+  //     resetNotification()
 
-    } catch (exception) {
-      dispatch(createError(`Encountered an error: ${exception.msg}`))
-      resetNotification()
-    }
-    resetFormFields()
-  }
+  //   } catch (exception) {
+  //     dispatch(createError(`Encountered an error: ${exception.msg}`))
+  //     resetNotification()
+  //   }
+  //   resetFormFields()
+  // }
 
-  const newBlogForm = () => (
-    <Togglable buttonId='new-blog-button' buttonLabel='new blog' ref={createNewFormRef}>
-      <CreateNewForm
-        addBlog={addBlog}
-        title={title}
-        author={author}
-        url={url}
-        handleTitleChange={({ target }) => setTitle(target.value)}
-        handleAuthorChange={({ target }) => setAuthor(target.value)}
-        handleUrlChange={({ target }) => setUrl(target.value)}
-      />
-    </Togglable>
-  )
+  // const newBlogForm = () => (
+  //   <Togglable buttonId='new-blog-button' buttonLabel='new blog' ref={createNewFormRef}>
+  //     <CreateNewForm user={user}/>
+  //   </Togglable>
+  // )
 
   const updateList = (changedBlog) => {
     const updatedList = blogs.map(blog => blog.id !== changedBlog.id ? blog : changedBlog)
@@ -98,7 +85,7 @@ const BlogForm = ({
       <div>
         {user.name} logged in <button onClick={handleLogout}>log out</button>
       </div>
-      {newBlogForm()}
+      <CreateNewForm user={user} updateList={updateList}/>
       <div id="blog-list">
         {blogs.map(blog => <Blog
           key={blog.id}
