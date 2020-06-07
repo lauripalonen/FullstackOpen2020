@@ -17,7 +17,7 @@ const BlogForm = ({
   const blogs = useSelector(state => state.blogs)
 
   // const createNewFormRef = React.createRef()
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
   // const resetNotification = () => {
   //   setTimeout(() => {
@@ -72,9 +72,10 @@ const BlogForm = ({
 
   const likeBlog = async (blog, event) => {
     event.preventDefault()
-    const changedBlog = { ...blog, likes: blog.likes + 1 }
-    blogService.update(blog.id, changedBlog)
-    updateList(changedBlog)
+    dispatch({ type: 'LIKE_BLOG', blog: blog })
+    // const changedBlog = { ...blog, likes: blog.likes + 1 }
+    // blogService.update(blog.id, changedBlog)
+    // updateList(changedBlog)
   }
 
 
@@ -85,7 +86,7 @@ const BlogForm = ({
       <div>
         {user.name} logged in <button onClick={handleLogout}>log out</button>
       </div>
-      <CreateNewForm user={user} updateList={updateList}/>
+      <CreateNewForm user={user} updateList={updateList} />
       <div id="blog-list">
         {blogs.map(blog => <Blog
           key={blog.id}
