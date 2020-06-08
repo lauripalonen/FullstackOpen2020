@@ -2,7 +2,6 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Blog from './Blog'
 import CreateNewForm from './CreateNewForm'
-import blogService from '../services/blogs'
 import NotificationBar from './NotificationBar'
 
 const BlogForm = ({
@@ -64,12 +63,6 @@ const BlogForm = ({
     // ADD FUNCTIONALITY TO UPDATE BLOGLIST
   }
 
-  const removeFromList = (removedBlog) => {
-    const updatedList = blogs.filter(blog => blog.id !== removedBlog.id)
-    // setBlogs(updatedList)
-    // ADD FUNCTIONALITY TO UPDATE BLOGLIST
-  }
-
   const likeBlog = async (blog, event) => {
     event.preventDefault()
     dispatch({ type: 'LIKE_BLOG', blog: blog })
@@ -86,13 +79,12 @@ const BlogForm = ({
       <div>
         {user.name} logged in <button onClick={handleLogout}>log out</button>
       </div>
-      <CreateNewForm user={user} updateList={updateList} />
+      <CreateNewForm user={user}/>
       <div id="blog-list">
         {blogs.map(blog => <Blog
           key={blog.id}
           blog={blog}
           updateList={updateList}
-          removeFromList={removeFromList}
           user={user}
           likeBlog={likeBlog}
         />)}

@@ -6,7 +6,7 @@ import blogService from '../services/blogs'
 import Togglable from './Togglable'
 
 
-const CreateNewForm = (user) => {
+const CreateNewForm = ({ user }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -26,13 +26,9 @@ const CreateNewForm = (user) => {
   }
 
   const addBlog = async (blogObject) => {
-
     try {
       const newBlog = await blogService.create(blogObject)
-      const newBlogWithUser = { ...newBlog, user: { username: user.username } }
-      console.log('blog with a user:')
-      console.log(newBlogWithUser)
-      dispatch({ type: 'NEW_BLOG', data: newBlogWithUser })
+      dispatch({ type: 'NEW_BLOG', data: { ...newBlog, user: user } })
 
       dispatch(createNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
       resetNotification()

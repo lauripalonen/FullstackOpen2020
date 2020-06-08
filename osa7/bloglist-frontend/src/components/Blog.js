@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, removeFromList, user, likeBlog }) => {
+const Blog = ({ blog, user, likeBlog }) => {
   const [simpleDisplay, setSimpleDisplay] = useState(true)
 
   const buttonText = () => (simpleDisplay ? 'view' : 'hide')
+
+  const dispatch = useDispatch()
 
   const handleButtonClick = async (event) => {
     event.preventDefault()
@@ -14,8 +16,7 @@ const Blog = ({ blog, removeFromList, user, likeBlog }) => {
   const removeBlog = async (event) => {
     event.preventDefault()
     if (window.confirm(`Remove blog ${blog.title}?`)) {
-      await blogService.removeBlog(blog.id)
-      removeFromList(blog)
+      dispatch({ type: 'REMOVE_BLOG', blog })
     }
   }
 

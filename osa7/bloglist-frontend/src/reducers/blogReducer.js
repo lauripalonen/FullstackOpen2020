@@ -7,13 +7,20 @@ const blogReducer = (state = [], action) => {
       return action.data
     case 'NEW_BLOG':
       return [...state, action.data]
-    case 'LIKE_BLOG':
-      var id = action.blog.id
-      var blogToUpdate = state.find(b => b.id === id)
-      var updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
+    case 'LIKE_BLOG': {
+      const id = action.blog.id
+      const blogToUpdate = state.find(b => b.id === id)
+      const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
       blogService.update(id, updatedBlog)
       return state.map(blog =>
         blog.id !== id ? blog : updatedBlog)
+        .sort((a, b) => b.likes - a.likes)
+    }
+    case 'REMOVE_BLOG': {
+      const id = action.blog.id
+      blogService.removeBlog(id)
+      return state.filter(blog => blog.id !== id)
+    }
     default:
       return state
   }
