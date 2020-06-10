@@ -11,12 +11,6 @@ const BlogForm = ({ user, handleLogout }) => {
 
   const dispatch = useDispatch()
 
-  // const resetNotification = () => {
-  //   setTimeout(() => {
-  //     dispatch({ type: 'CLEAR_NOTIFICATION' })
-  //   }, 5000)
-  // }
-
   const likeBlog = async (blog, event) => {
     event.preventDefault()
     dispatch({ type: 'LIKE_BLOG', blog: blog })
