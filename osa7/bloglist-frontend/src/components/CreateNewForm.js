@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createNotification, createError } from '../reducers/notificationReducer'
+import { createBlog } from '../reducers/blogReducer'
 
 import blogService from '../services/blogs'
 import Togglable from './Togglable'
@@ -28,8 +29,7 @@ const CreateNewForm = ({ user }) => {
   const addBlog = async (blogObject) => {
     try {
       const newBlog = await blogService.create(blogObject)
-      dispatch({ type: 'NEW_BLOG', data: { ...newBlog, user: user } })
-
+      dispatch(createBlog({ ...newBlog, user: user }))
       dispatch(createNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
       resetNotification()
 

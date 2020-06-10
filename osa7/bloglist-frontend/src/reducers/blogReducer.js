@@ -36,12 +36,12 @@ export const initializeBlogs = () => {
   }
 }
 
-// export const createBlog = (data) => {
-//   return {
-//     type: 'NEW_BLOG',
-//     data,
-//   }
-// }
+export const createBlog = (data) => {
+  return {
+    type: 'NEW_BLOG',
+    data,
+  }
+}
 
 // export const likeBlog = (data) => {
 //   return {
