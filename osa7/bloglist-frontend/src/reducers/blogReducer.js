@@ -43,11 +43,11 @@ export const createBlog = (data) => {
   }
 }
 
-// export const likeBlog = (data) => {
-//   return {
-//     type: 'LIKE_BLOG',
-//     data
-//   }
-// }
+export const likeBlog = (blog) => {
+  return {
+    type: 'LIKE_BLOG',
+    blog
+  }
+}
 
 export default blogReducer

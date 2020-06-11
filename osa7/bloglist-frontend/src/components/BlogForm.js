@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Blog from './Blog'
 import CreateNewForm from './CreateNewForm'
 import NotificationBar from './NotificationBar'
+import { likeBlog } from '../reducers/blogReducer'
 
 const BlogForm = ({ user, handleLogout }) => {
 
@@ -11,9 +12,10 @@ const BlogForm = ({ user, handleLogout }) => {
 
   const dispatch = useDispatch()
 
-  const likeBlog = async (blog, event) => {
+  const handleLike = async (blog, event) => {
     event.preventDefault()
-    dispatch({ type: 'LIKE_BLOG', blog: blog })
+    console.log('(BlogForm) dispatch blog like with blog: ', blog)
+    dispatch(likeBlog(blog))
   }
 
   return (
@@ -29,7 +31,7 @@ const BlogForm = ({ user, handleLogout }) => {
           key={blog.id}
           blog={blog}
           user={user}
-          likeBlog={likeBlog}
+          handleLike={handleLike}
         />)}
       </div>
     </div>

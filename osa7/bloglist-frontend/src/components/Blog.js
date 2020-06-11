@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, user, likeBlog }) => {
+const Blog = ({ blog, user, handleLike }) => {
   const [simpleDisplay, setSimpleDisplay] = useState(true)
 
   const buttonText = () => (simpleDisplay ? 'view' : 'hide')
@@ -23,7 +23,7 @@ const Blog = ({ blog, user, likeBlog }) => {
   const detailedDisplay = () => (
     <div>
       {blog.url} <br />
-      likes: {blog.likes} <button id='like-button' onClick={(e) => likeBlog(blog, e)}>like</button><br />
+      likes: {blog.likes} <button id='like-button' onClick={(e) => handleLike(blog, e)}>like</button><br />
       {blog.user.username} <br />
       {blog.user.username === user.username ? <button id='remove-blog-button' onClick={removeBlog}>remove</button> : null}
     </div>
