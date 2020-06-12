@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { removeBlog } from '../reducers/blogReducer'
 
 const Blog = ({ blog, user, handleLike }) => {
   const [simpleDisplay, setSimpleDisplay] = useState(true)
@@ -13,10 +14,10 @@ const Blog = ({ blog, user, handleLike }) => {
     setSimpleDisplay(!simpleDisplay)
   }
 
-  const removeBlog = async (event) => {
+  const handleRemoveBlog = async (event) => {
     event.preventDefault()
     if (window.confirm(`Remove blog ${blog.title}?`)) {
-      dispatch({ type: 'REMOVE_BLOG', blog })
+      dispatch(removeBlog(blog))
     }
   }
 
@@ -25,7 +26,7 @@ const Blog = ({ blog, user, handleLike }) => {
       {blog.url} <br />
       likes: {blog.likes} <button id='like-button' onClick={(e) => handleLike(blog, e)}>like</button><br />
       {blog.user.username} <br />
-      {blog.user.username === user.username ? <button id='remove-blog-button' onClick={removeBlog}>remove</button> : null}
+      {blog.user.username === user.username ? <button id='remove-blog-button' onClick={handleRemoveBlog}>remove</button> : null}
     </div>
   )
 

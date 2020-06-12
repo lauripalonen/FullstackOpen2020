@@ -6,9 +6,10 @@ const blogReducer = (state = [], action) => {
       action.data.sort((a, b) => b.likes - a.likes)
       return action.data
     case 'NEW_BLOG':
-      return [...state, action.data]
+      return [...state, action.data.blog]
     case 'LIKE_BLOG': {
-      const id = action.blog.id
+      console.log('Action.data: ', action.data)
+      const id = action.data.blog.id
       const blogToUpdate = state.find(b => b.id === id)
       const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
       blogService.update(id, updatedBlog)
@@ -17,7 +18,7 @@ const blogReducer = (state = [], action) => {
         .sort((a, b) => b.likes - a.likes)
     }
     case 'REMOVE_BLOG': {
-      const id = action.blog.id
+      const id = action.data.blog.id
       blogService.removeBlog(id)
       return state.filter(blog => blog.id !== id)
     }
@@ -36,17 +37,24 @@ export const initializeBlogs = () => {
   }
 }
 
-export const createBlog = (data) => {
+export const createBlog = (blog) => {
   return {
     type: 'NEW_BLOG',
-    data,
+    data: { blog }
+  }
+}
+
+export const removeBlog = (blog) => {
+  return {
+    type: 'REMOVE_BLOG',
+    data: { blog }
   }
 }
 
 export const likeBlog = (blog) => {
   return {
     type: 'LIKE_BLOG',
-    blog
+    data: { blog }
   }
 }
 
