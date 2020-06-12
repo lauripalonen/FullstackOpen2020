@@ -14,7 +14,6 @@ const BlogForm = ({ user, handleLogout }) => {
 
   const handleLike = async (blog, event) => {
     event.preventDefault()
-    console.log('(BlogForm) dispatch blog like with blog: ', blog)
     dispatch(likeBlog(blog))
   }
 
