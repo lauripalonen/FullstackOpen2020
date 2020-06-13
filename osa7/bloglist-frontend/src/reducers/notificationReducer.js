@@ -2,6 +2,9 @@ const notificationReducer = (state = '', action) => {
   switch (action.type) {
     case 'NEW_NOTIFICATION':
       return action.data
+    case 'NEW_ERROR':
+      console.log(action.data)
+      return action.data
     case 'CLEAR_NOTIFICATION':
       return ''
     default:
@@ -9,7 +12,7 @@ const notificationReducer = (state = '', action) => {
   }
 }
 
-export const createNotification = (content) => {
+export const sendNotification = (content) => {
   return {
     type: 'NEW_NOTIFICATION',
     data: {
@@ -19,13 +22,19 @@ export const createNotification = (content) => {
   }
 }
 
-export const createError = (content) => {
+export const sendError = (content) => {
   return {
     type: 'NEW_ERROR',
     data: {
       content,
       type: 'error'
     }
+  }
+}
+
+export const clearNotification = () => {
+  return {
+    type: 'CLEAR_NOTIFICATION',
   }
 }
 
