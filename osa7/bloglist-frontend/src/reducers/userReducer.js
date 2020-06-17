@@ -1,63 +1,21 @@
-import loginService from '../services/login'
-import blogService from '../services/blogs'
-import { clearNotification, sendError, sendNotification } from './notificationReducer'
+import userService from '../services/users'
 
 
 const userReducer = (state = null, action) => {
   switch (action.type) {
-    case ('LOG_IN'):
-      blogService.setToken(action.data.user.token)
-      window.localStorage.setItem(
-        'loggedBlogappUser',
-        JSON.stringify(action.data.user))
-      return action.data.user
-    case ('LOG_OUT'):
-      return null
+    case ('GET_USERS'):
+      return action.data.users
     default:
       return state
   }
 }
 
-export const userLogin = (username, password) => {
+export const getUsers = () => {
   return async dispatch => {
-    try {
-      const user = await loginService.login({ username, password })
-      dispatch({
-        type: 'LOG_IN',
-        data: { user }
-      })
-      dispatch(sendNotification(`${username} logged in!`))
-      setTimeout(() => {
-        dispatch(clearNotification())
-      }, 5000)
-    } catch (e) {
-      dispatch(sendError('invalid username or password'))
-      setTimeout(() => {
-        dispatch(clearNotification())
-      }, 5000)
-    }
-  }
-}
-
-export const checkLocalStorage = () => {
-  return dispatch => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      blogService.setToken(user.token)
-      dispatch({
-        type: 'LOG_IN',
-        data: { user }
-      })
-    }
-  }
-}
-
-export const userLogout = () => {
-  window.localStorage.removeItem('loggedBlogappUser')
-  return dispatch => {
+    const users = await userService.getAll()
     dispatch({
-      type: 'LOG_OUT',
+      type: 'GET_USERS',
+      data: { users }
     })
   }
 }
