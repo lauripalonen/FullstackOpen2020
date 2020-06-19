@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeBlog, likeBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
@@ -29,15 +29,6 @@ const Blog = ( ) => {
     dispatch(likeBlog(blog))
   }
 
-  // const detailedDisplay = () => (
-  //   <div>
-  //     {blog.url} <br />
-  //     likes: {blog.likes} <button id='like-button' onClick={(e) => handleLike(blog, e)}>like</button><br />
-  //     {blog.user.username} <br />
-  //     {blog.user.username === user.username ? <button id='remove-blog-button' onClick={handleRemoveBlog}>remove</button> : null}
-  //   </div>
-  // )
-
   return (
     <div className='blog-item'>
       <h2>{blog.title} {blog.author}</h2>
@@ -46,10 +37,6 @@ const Blog = ( ) => {
       added by {user.username} <br />
       {blog.user.username === user.username ? <button id='remove-blog-button' onClick={handleRemoveBlog}>remove</button> : null}
     </div>
-    // <div className='blog-item'>
-    //   {blog.title} {blog.author} <button id="display-toggle-button" onClick={handleButtonClick}>{buttonText()}</button>
-    //   {simpleDisplay ? null : detailedDisplay()}
-    // </div>
   )
 }
 

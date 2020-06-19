@@ -23,3 +23,8 @@
   border: 0.1em solid black;
   margin: 0.2em;
 }
+
+.top-bar {
+  background-color: lightgrey;
+  padding: 0.5em;
+}

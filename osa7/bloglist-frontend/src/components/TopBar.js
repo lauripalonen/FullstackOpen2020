@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { userLogout } from '../reducers/loginReducer'
 import { clearNotification } from '../reducers/notificationReducer'
+import { Link } from 'react-router-dom'
 
 import { useHistory } from 'react-router-dom'
 
@@ -16,13 +17,16 @@ const TopBar = ({ user }) => {
     dispatch(clearNotification())
     history.push('/login')
   }
+
+  const padding = {
+    padding: 5
+  }
   if (user) {
     return (
-      <div>
-        <h2>blogs</h2>
-        <div>
-          {user.name} logged in <button onClick={handleLogout}>log out</button>
-        </div>
+      <div className='top-bar'>
+        <Link to='/blogs' style={padding}>blogs</Link>
+        <Link to='/users' style={padding}>users</Link>
+        {user.name} logged in <button onClick={handleLogout}>log out</button>
       </div>
     )
   }
