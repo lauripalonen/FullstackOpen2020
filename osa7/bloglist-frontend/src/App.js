@@ -4,6 +4,7 @@ import BlogForm from './components/BlogForm'
 import UserList from './components/UserList'
 import UserDisplay from './components/UserDisplay'
 import NotificationBar from './components/NotificationBar'
+import Blog from './components/Blog'
 import TopBar from './components/TopBar'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
@@ -40,8 +41,11 @@ const App = () => {
       <TopBar user={user} />
       {!user ? <LoginForm /> :
         <Switch>
+          <Route path="/blogs/:id">
+            <Blog />
+          </Route>
           <Route path="/blogs">
-            <BlogForm />
+            <BlogForm user={user} />
           </Route>
           <Route path="/users/:id">
             <UserDisplay users={users} />

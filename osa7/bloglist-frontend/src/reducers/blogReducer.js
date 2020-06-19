@@ -2,7 +2,7 @@ import blogService from '../services/blogs'
 
 const blogReducer = (state = [], action) => {
   switch (action.type) {
-    case 'INIT_NOTES':
+    case 'INIT_BLOGS':
       action.data.sort((a, b) => b.likes - a.likes)
       return action.data
     case 'NEW_BLOG':
@@ -30,7 +30,7 @@ export const initializeBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
     dispatch({
-      type: 'INIT_NOTES',
+      type: 'INIT_BLOGS',
       data: blogs
     })
   }
