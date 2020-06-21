@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { removeBlog, likeBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
 
-const Blog = ( ) => {
+const Blog = () => {
   const dispatch = useDispatch()
   const id = useParams().id
 
@@ -12,7 +12,7 @@ const Blog = ( ) => {
 
   const blog = blogs.find(b => b.id === id)
 
-  if(!blog){
+  if (!blog) {
     return null
   }
 
@@ -29,6 +29,15 @@ const Blog = ( ) => {
     dispatch(likeBlog(blog))
   }
 
+  const commentSection = (
+    <div>
+      <h3>Comments</h3>
+      <ul>
+        {blog.comments.map(c => <li key={c}>{c}</li>)}
+      </ul>
+    </div>
+  )
+
   return (
     <div className='blog-item'>
       <h2>{blog.title} {blog.author}</h2>
@@ -36,6 +45,7 @@ const Blog = ( ) => {
       {blog.likes} likes <button id='like-button' onClick={(e) => handleLike(blog, e)}>like</button><br />
       added by {user.username} <br />
       {blog.user.username === user.username ? <button id='remove-blog-button' onClick={handleRemoveBlog}>remove</button> : null}
+      {commentSection}
     </div>
   )
 }
