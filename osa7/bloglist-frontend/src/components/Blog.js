@@ -1,7 +1,9 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeBlog, likeBlog } from '../reducers/blogReducer'
+import { sendError, clearNotification } from '../reducers/notificationReducer'
 import { useParams } from 'react-router-dom'
+import blogService from '../services/blogs'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -29,11 +31,46 @@ const Blog = () => {
     dispatch(likeBlog(blog))
   }
 
+
+
+  const handleComment = async (event) => {
+    event.preventDefault()
+    const comment = event.target.comment.value
+    // dispatch(userLogin(username, password))
+    if (!comment) {
+      dispatch(sendError('comment cannot be empty'))
+      setTimeout(() => {
+        dispatch(clearNotification())
+      }, 5000)
+
+      return
+    }
+    blogService.addComment(id, comment)
+    event.target.comment.value = ''
+
+  }
+
+  const commentField = (
+    <form onSubmit={handleComment}>
+      <input type="text"
+        id='comment'
+        name="Comment"
+      />
+      <button type='submit'>comment</button>
+    </form>
+  )
+
+
+
   const commentSection = (
     <div>
       <h3>Comments</h3>
+      {commentField}
       <ul>
-        {blog.comments.map(c => <li key={c}>{c}</li>)}
+        {blog.comments.map(c => {
+          if (c === null) { return }
+          return (<li key={c}>{c}</li>)
+        })}
       </ul>
     </div>
   )
