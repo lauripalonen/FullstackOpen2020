@@ -1,7 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 
 
@@ -26,7 +25,7 @@ describe('Blog display', () => {
     }
 
     component = render(
-      <Blog blog={blog} user={user} likeBlog={mockHandler}/>
+      <Blog blog={blog} user={user} likeBlog={mockHandler} />
     )
 
 
@@ -70,7 +69,7 @@ describe('Blog display', () => {
     fireEvent.click(likeButton)
 
     expect(mockHandler.mock.calls.length).toBe(2)
-    
+
 
   })
 

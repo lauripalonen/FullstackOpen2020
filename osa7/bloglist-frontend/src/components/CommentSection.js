@@ -1,0 +1,56 @@
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { sendError, clearNotification } from '../reducers/notificationReducer'
+import { initializeComments } from '../reducers/commentReducer'
+import blogService from '../services/blogs'
+
+
+const CommentSection = ({ blog }) => {
+  const dispatch = useDispatch()
+  const comments = useSelector(state => state.comments)
+
+  useEffect(() => {
+    dispatch(initializeComments(blog))
+  }, [dispatch])
+
+  const handleComment = async (event) => {
+    event.preventDefault()
+    const comment = event.target.comment.value
+    if (!comment) {
+      dispatch(sendError('comment cannot be empty'))
+      setTimeout(() => {
+        dispatch(clearNotification())
+      }, 5000)
+
+      return
+    }
+    blogService.addComment(blog.id, comment)
+    event.target.comment.value = ''
+  }
+
+  const commentField = (
+    <form onSubmit={handleComment}>
+      <input type="text"
+        id='comment'
+        name="Comment"
+      />
+      <button type='submit'>comment</button>
+    </form>
+  )
+
+  const CommentList = ({ comments }) => (
+    <ul>
+      {comments ? comments.map(c => <li key={c}>{c}</li>) : ''}
+    </ul>
+  )
+
+  return (
+    <div>
+      <h3>Comments</h3>
+      {commentField}
+      <CommentList comments={comments} />
+    </div>
+  )
+}
+
+export default CommentSection

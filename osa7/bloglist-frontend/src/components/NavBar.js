@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 
 
-const TopBar = ({ user }) => {
+const NavBar = ({ loggedUser }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -21,12 +21,12 @@ const TopBar = ({ user }) => {
   const padding = {
     padding: 5
   }
-  if (user) {
+  if (loggedUser) {
     return (
       <div className='top-bar'>
         <Link to='/blogs' style={padding}>blogs</Link>
         <Link to='/users' style={padding}>users</Link>
-        {user.name} logged in <button onClick={handleLogout}>log out</button>
+        {loggedUser.name} logged in <button onClick={handleLogout}>log out</button>
       </div>
     )
   }
@@ -34,4 +34,4 @@ const TopBar = ({ user }) => {
   return (<div></div>)
 }
 
-export default TopBar
+export default NavBar

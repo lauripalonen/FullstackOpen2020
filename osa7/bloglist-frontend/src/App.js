@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
+import BlogsDisplay from './components/BlogsDisplay'
 import UserList from './components/UserList'
 import UserDisplay from './components/UserDisplay'
 import NotificationBar from './components/NotificationBar'
 import Blog from './components/Blog'
-import TopBar from './components/TopBar'
+import NavBar from './components/NavBar'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { checkLocalStorage } from './reducers/loginReducer'
@@ -17,7 +17,7 @@ import {
 } from 'react-router-dom'
 
 const App = () => {
-  const user = useSelector(state => state.login)
+  const loggedUser = useSelector(state => state.login)
   const notification = useSelector(state => state.notification)
   const users = useSelector(state => state.user)
 
@@ -38,14 +38,14 @@ const App = () => {
   return (
     <Router>
       <NotificationBar notification={notification} />
-      <TopBar user={user} />
-      {!user ? <LoginForm /> :
+      <NavBar loggedUser={loggedUser} />
+      {!loggedUser ? <LoginForm /> :
         <Switch>
           <Route path="/blogs/:id">
-            <Blog />
+            <Blog loggedUser={loggedUser} />
           </Route>
           <Route path="/blogs">
-            <BlogForm user={user} />
+            <BlogsDisplay loggedUser={loggedUser} />
           </Route>
           <Route path="/users/:id">
             <UserDisplay users={users} />
@@ -54,10 +54,10 @@ const App = () => {
             <UserList />
           </Route>
           <Route path="/login">
-            {user ? <Redirect to="/" /> : <LoginForm />}
+            {loggedUser ? <Redirect to="/" /> : <LoginForm />}
           </Route>
           <Route path="/">
-            <BlogForm />
+            <BlogsDisplay loggedUser={loggedUser} />
           </Route>
         </Switch>
       }
