@@ -21,6 +21,7 @@ const NavBar = ({ loggedUser }) => {
   const padding = {
     padding: 5
   }
+
   if (loggedUser) {
     return (
       <div className='top-bar'>
@@ -30,7 +31,6 @@ const NavBar = ({ loggedUser }) => {
       </div>
     )
   }
-
   return (<div></div>)
 }
 

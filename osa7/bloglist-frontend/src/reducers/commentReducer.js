@@ -20,8 +20,9 @@ export const initializeComments = (blog) => {
   }
 }
 
-export const postComment = (comment) => {
+export const postComment = (id, comment) => {
   return async dispatch => {
+    blogService.postComment(id, comment)
     dispatch({
       type: 'POST_COMMENT',
       data: comment

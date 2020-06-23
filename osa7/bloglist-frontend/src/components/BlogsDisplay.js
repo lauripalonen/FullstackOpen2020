@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import CreateNewForm from './CreateNewForm'
 import { Link } from 'react-router-dom'
+import CreateNewForm from './CreateNewForm'
 
 const BlogsDisplay = ({ loggedUser }) => {
 

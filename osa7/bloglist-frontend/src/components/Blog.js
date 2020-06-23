@@ -1,28 +1,30 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeBlog, likeBlog } from '../reducers/blogReducer'
+
 import { sendError, clearNotification } from '../reducers/notificationReducer'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
+
 import blogService from '../services/blogs'
 import CommentSection from './CommentSection'
 
 const Blog = ({ loggedUser }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const id = useParams().id
 
   const blogs = useSelector(state => state.blogs)
-
   const blog = blogs.find(b => b.id === id)
 
   if (!blog) {
     return null
   }
 
-
   const handleRemoveBlog = async (event) => {
     event.preventDefault()
     if (window.confirm(`Remove blog ${blog.title}?`)) {
       dispatch(removeBlog(blog))
+      history.push('/')
     }
   }
 
@@ -54,7 +56,7 @@ const Blog = ({ loggedUser }) => {
       {blog.likes} likes <button id='like-button' onClick={(e) => handleLike(blog, e)}>like</button><br />
       added by {loggedUser.username} <br />
       {blog.user.username === loggedUser.username ? <button id='remove-blog-button' onClick={handleRemoveBlog}>remove</button> : null}
-      <CommentSection blog={blog} handleComment={handleComment}/>
+      <CommentSection blog={blog} handleComment={handleComment} />
     </div>
   )
 }

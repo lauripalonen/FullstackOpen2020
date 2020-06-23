@@ -3,7 +3,6 @@ const notificationReducer = (state = '', action) => {
     case 'NEW_NOTIFICATION':
       return action.data
     case 'NEW_ERROR':
-      console.log(action.data)
       return action.data
     case 'CLEAR_NOTIFICATION':
       return ''

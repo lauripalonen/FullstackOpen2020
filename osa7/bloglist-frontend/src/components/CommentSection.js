@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendError, clearNotification } from '../reducers/notificationReducer'
 import { initializeComments, postComment } from '../reducers/commentReducer'
-import blogService from '../services/blogs'
 
 
 const CommentSection = ({ blog }) => {
@@ -11,11 +10,12 @@ const CommentSection = ({ blog }) => {
 
   useEffect(() => {
     dispatch(initializeComments(blog))
-  }, [dispatch])
+  }, [dispatch, blog])
 
   const handleComment = async (event) => {
     event.preventDefault()
     const comment = event.target.comment.value
+
     if (!comment) {
       dispatch(sendError('comment cannot be empty'))
       setTimeout(() => {
@@ -25,8 +25,7 @@ const CommentSection = ({ blog }) => {
       return
     }
 
-    dispatch(postComment(comment))
-    blogService.addComment(blog.id, comment)
+    dispatch(postComment(blog.id, comment))
     event.target.comment.value = ''
   }
 

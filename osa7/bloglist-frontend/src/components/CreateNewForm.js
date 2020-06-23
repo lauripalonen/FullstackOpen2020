@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { sendNotification, sendError } from '../reducers/notificationReducer'
+import { sendNotification, sendError, clearNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
 
 import blogService from '../services/blogs'
@@ -22,7 +22,7 @@ const CreateNewForm = ({ user }) => {
 
   const resetNotification = () => {
     setTimeout(() => {
-      dispatch({ type: 'CLEAR_NOTIFICATION' })
+      dispatch(clearNotification())
     }, 5000)
   }
 
@@ -34,7 +34,6 @@ const CreateNewForm = ({ user }) => {
       resetNotification()
 
     } catch (exception) {
-      console.log('ERROR: ', exception)
       dispatch(sendError(`Encountered an error: ${exception.msg}`))
       resetNotification()
     }
@@ -49,14 +48,9 @@ const CreateNewForm = ({ user }) => {
       author: author,
       url: url
     }
-
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-
+    resetFormFields()
     addBlog(blogObject)
   }
-
 
   return (
     <div>
