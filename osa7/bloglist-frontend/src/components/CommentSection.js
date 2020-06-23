@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendError, clearNotification } from '../reducers/notificationReducer'
-import { initializeComments } from '../reducers/commentReducer'
+import { initializeComments, postComment } from '../reducers/commentReducer'
 import blogService from '../services/blogs'
 
 
@@ -24,6 +24,8 @@ const CommentSection = ({ blog }) => {
 
       return
     }
+
+    dispatch(postComment(comment))
     blogService.addComment(blog.id, comment)
     event.target.comment.value = ''
   }

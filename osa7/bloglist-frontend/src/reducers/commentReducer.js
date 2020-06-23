@@ -5,8 +5,7 @@ const commentReducer = (state = [], action) => {
     case ('INIT_COMMENTS'):
       return action.data.filter(c => c)
     case ('POST_COMMENT'):
-      blogService.addComment(action.data)
-      return action.data.user
+      return [...state, action.data]
     default:
       return state
   }
@@ -17,6 +16,15 @@ export const initializeComments = (blog) => {
     dispatch({
       type: 'INIT_COMMENTS',
       data: blog.comments
+    })
+  }
+}
+
+export const postComment = (comment) => {
+  return async dispatch => {
+    dispatch({
+      type: 'POST_COMMENT',
+      data: comment
     })
   }
 }
