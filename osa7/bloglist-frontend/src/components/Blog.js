@@ -52,7 +52,7 @@ const Blog = ({ loggedUser }) => {
   return (
     <div className='blog-item'>
       <h2>{blog.title} {blog.author}</h2>
-      {blog.url} <br />
+      <a href={`//${blog.url}`}>{blog.url}</a> <br />
       {blog.likes} likes <button id='like-button' onClick={(e) => handleLike(blog, e)}>like</button><br />
       added by {loggedUser.username} <br />
       {blog.user.username === loggedUser.username ? <button id='remove-blog-button' onClick={handleRemoveBlog}>remove</button> : null}
