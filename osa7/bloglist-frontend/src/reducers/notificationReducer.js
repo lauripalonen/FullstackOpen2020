@@ -1,8 +1,14 @@
 const notificationReducer = (state = '', action) => {
   switch (action.type) {
     case 'NEW_NOTIFICATION':
+      setTimeout(() => {
+        clearNotification()
+      }, 5000)
       return action.data
     case 'NEW_ERROR':
+      setTimeout(() => {
+        clearNotification()
+      }, 5000)
       return action.data
     case 'CLEAR_NOTIFICATION':
       return ''

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { sendError, clearNotification } from '../reducers/notificationReducer'
+import { sendError } from '../reducers/notificationReducer'
 import { initializeComments, postComment } from '../reducers/commentReducer'
 
 
@@ -18,10 +18,6 @@ const CommentSection = ({ blog }) => {
 
     if (!comment) {
       dispatch(sendError('comment cannot be empty'))
-      setTimeout(() => {
-        dispatch(clearNotification())
-      }, 5000)
-
       return
     }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeBlog, likeBlog } from '../reducers/blogReducer'
 
-import { sendError, clearNotification } from '../reducers/notificationReducer'
+import { sendError, sendNotification } from '../reducers/notificationReducer'
 import { useParams, useHistory } from 'react-router-dom'
 
 import blogService from '../services/blogs'
@@ -23,7 +23,9 @@ const Blog = ({ loggedUser }) => {
   const handleRemoveBlog = async (event) => {
     event.preventDefault()
     if (window.confirm(`Remove blog ${blog.title}?`)) {
+      const blogTitle = blog.title
       dispatch(removeBlog(blog))
+      dispatch(sendNotification(`${blogTitle} removed`))
       history.push('/')
     }
   }
@@ -38,10 +40,6 @@ const Blog = ({ loggedUser }) => {
     const comment = event.target.comment.value
     if (!comment) {
       dispatch(sendError('comment cannot be empty'))
-      setTimeout(() => {
-        dispatch(clearNotification())
-      }, 5000)
-
       return
     }
     blogService.addComment(id, comment)
