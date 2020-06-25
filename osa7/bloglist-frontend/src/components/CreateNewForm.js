@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { sendNotification, sendError } from '../reducers/notificationReducer'
+import { sendNotification, sendError, clearNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
 
 import blogService from '../services/blogs'
@@ -24,11 +24,13 @@ const CreateNewForm = ({ user }) => {
     try {
       const newBlog = await blogService.create(blogObject)
       dispatch(createBlog({ ...newBlog, user: user }))
-      dispatch(sendNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
-
     } catch (exception) {
       dispatch(sendError(`Encountered an error: ${exception.msg}`))
+      return
     }
+
+    dispatch(sendNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
+    dispatch(clearNotification(5000))
     resetFormFields()
   }
 

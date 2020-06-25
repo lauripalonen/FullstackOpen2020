@@ -3,7 +3,7 @@ import React from 'react'
 const NotificationBar = ({ notification }) => {
 
   if (!notification) {
-    return <div></div>
+    return <div className='notification-placeholder'></div>
   }
   return (
     <div className={notification.type}>
