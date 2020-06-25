@@ -37,8 +37,9 @@ const App = () => {
 
   return (
     <Router>
-      <NotificationBar notification={notification} />
       <NavBar loggedUser={loggedUser} />
+      <h1>Blog app</h1>
+      <NotificationBar notification={notification} />
       {!loggedUser ? <LoginForm /> :
         <Switch>
           <Route path="/blogs/:id">

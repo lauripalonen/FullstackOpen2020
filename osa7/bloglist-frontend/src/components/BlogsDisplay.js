@@ -25,7 +25,6 @@ const BlogsDisplay = ({ loggedUser }) => {
 
   return (
     <div>
-      <h2>blog app</h2>
       <CreateNewForm user={loggedUser} />
       <BlogList blogs={blogs} />
     </div>

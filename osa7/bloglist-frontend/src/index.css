@@ -4,6 +4,7 @@
   padding: 1em;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1em;
+  margin-bottom: 1em;
 }
 
 .error {
@@ -16,6 +17,7 @@
 
 .notification-placeholder {
   height: 3em;
+  margin-bottom: 1em;
 }
 
 .blog-item {
