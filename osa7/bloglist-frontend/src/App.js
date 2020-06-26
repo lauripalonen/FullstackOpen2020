@@ -36,33 +36,35 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <Router>
-      <NavBar loggedUser={loggedUser} />
-      <h1>Blog app</h1>
-      <NotificationBar notification={notification} />
-      {!loggedUser ? <LoginForm /> :
-        <Switch>
-          <Route path="/blogs/:id">
-            <Blog loggedUser={loggedUser} />
-          </Route>
-          <Route path="/blogs">
-            <BlogsDisplay loggedUser={loggedUser} />
-          </Route>
-          <Route path="/users/:id">
-            <UserDisplay users={users} />
-          </Route>
-          <Route path="/users">
-            <UserList />
-          </Route>
-          <Route path="/login">
-            {loggedUser ? <Redirect to="/" /> : <LoginForm />}
-          </Route>
-          <Route path="/">
-            <BlogsDisplay loggedUser={loggedUser} />
-          </Route>
-        </Switch>
-      }
-    </Router>
+    <div className="container">
+      <Router>
+        <NavBar loggedUser={loggedUser} />
+        <h1>Blog app</h1>
+        <NotificationBar notification={notification} />
+        {!loggedUser ? <LoginForm /> :
+          <Switch>
+            <Route path="/blogs/:id">
+              <Blog loggedUser={loggedUser} />
+            </Route>
+            <Route path="/blogs">
+              <BlogsDisplay loggedUser={loggedUser} />
+            </Route>
+            <Route path="/users/:id">
+              <UserDisplay users={users} />
+            </Route>
+            <Route path="/users">
+              <UserList />
+            </Route>
+            <Route path="/login">
+              {loggedUser ? <Redirect to="/" /> : <LoginForm />}
+            </Route>
+            <Route path="/">
+              <BlogsDisplay loggedUser={loggedUser} />
+            </Route>
+          </Switch>
+        }
+      </Router>
+    </div>
   )
 }
 

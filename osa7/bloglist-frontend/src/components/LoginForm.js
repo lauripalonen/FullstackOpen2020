@@ -3,6 +3,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { userLogin } from '../reducers/loginReducer'
 import { useHistory } from 'react-router-dom'
+import { Form, Button } from 'react-bootstrap'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
@@ -23,22 +24,15 @@ const LoginForm = () => {
   return (
     <div>
       <h2>log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            name="username"
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            name="password"
-          />
-        </div>
-        <button id="login-button" type="submit">login</button>
-      </form>
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control type="text" name="username"/>
+          <Form.Label>password:</Form.Label>
+          <Form.Control type="password" name="password"/>
+          <Button variant="primary" type="submit">login</Button>
+        </Form.Group>
+      </Form>
     </div>
   )
 }

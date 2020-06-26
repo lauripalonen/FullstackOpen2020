@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUsers } from '../reducers/userReducer'
 import UserItem from './UserItem'
+import { Table } from 'react-bootstrap'
 
 const UserList = () => {
 
@@ -15,7 +16,7 @@ const UserList = () => {
   return (
     <div>
       <h2>Users</h2>
-      <table>
+      <Table striped>
         <tbody>
           <tr>
             <th></th>
@@ -23,7 +24,7 @@ const UserList = () => {
           </tr>
           {!users ? <tr /> : users.map(user => <UserItem key={user.id} user={user} />)}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }
