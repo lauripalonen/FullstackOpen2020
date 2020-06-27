@@ -1,14 +1,17 @@
 import React from 'react'
+import { Alert } from 'react-bootstrap'
 
 const NotificationBar = ({ notification }) => {
-
   if (!notification) {
     return <div className='notification-placeholder'></div>
   }
   return (
-    <div className={notification.type}>
+    <Alert variant={notification.type}>
       {notification.content}
-    </div>
+    </Alert>
+    // <div className={notification.type}>
+    //   {notification.content}
+    // </div>
   )
 }
 

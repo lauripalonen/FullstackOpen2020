@@ -19,7 +19,7 @@ export const sendNotification = (content) => {
     type: 'NEW_NOTIFICATION',
     data: {
       content,
-      type: 'notification'
+      type: 'success'
     }
   }
 }
@@ -29,7 +29,7 @@ export const sendError = (content) => {
     type: 'NEW_ERROR',
     data: {
       content,
-      type: 'error'
+      type: 'danger'
     }
   }
 }
