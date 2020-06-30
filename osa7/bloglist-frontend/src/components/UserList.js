@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUsers } from '../reducers/userReducer'
 import UserItem from './UserItem'
-import { Table } from 'react-bootstrap'
+// import { Table } from 'react-bootstrap'
+import { Table, TableBody, TableRow, TableContainer, TableCell, TableHead, Paper } from '@material-ui/core'
 
 const UserList = () => {
 
@@ -16,15 +17,19 @@ const UserList = () => {
   return (
     <div>
       <h2>Users</h2>
-      <Table striped>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>blogs created</th>
-          </tr>
-          {!users ? <tr /> : users.map(user => <UserItem key={user.id} user={user} />)}
-        </tbody>
-      </Table>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>username</TableCell>
+              <TableCell>blogs created</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!users ? <tr /> : users.map(user => <UserItem key={user.id} user={user} />)}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }

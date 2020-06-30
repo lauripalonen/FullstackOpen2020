@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import LoginForm from './components/LoginForm'
 import BlogsDisplay from './components/BlogsDisplay'
 import UserList from './components/UserList'
@@ -6,10 +8,12 @@ import UserDisplay from './components/UserDisplay'
 import NotificationBar from './components/NotificationBar'
 import Blog from './components/Blog'
 import NavBar from './components/NavBar'
-import { useDispatch, useSelector } from 'react-redux'
+
 import { initializeBlogs } from './reducers/blogReducer'
 import { checkLocalStorage } from './reducers/loginReducer'
 import { getUsers } from './reducers/userReducer'
+
+import { Container } from '@material-ui/core'
 
 import {
   BrowserRouter as Router,
@@ -36,7 +40,7 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <div className="container">
+    <Container>
       <Router>
         <NavBar loggedUser={loggedUser} />
         <h1>Blog app</h1>
@@ -64,7 +68,7 @@ const App = () => {
           </Switch>
         }
       </Router>
-    </div>
+    </Container>
   )
 }
 
