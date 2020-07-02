@@ -29,7 +29,7 @@ export const sendError = (content) => {
     type: 'NEW_ERROR',
     data: {
       content,
-      type: 'danger'
+      type: 'error'
     }
   }
 }

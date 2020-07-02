@@ -1,17 +1,14 @@
 import React from 'react'
-import { Alert } from 'react-bootstrap'
+import { Alert } from '@material-ui/lab'
 
 const NotificationBar = ({ notification }) => {
   if (!notification) {
     return <div className='notification-placeholder'></div>
   }
   return (
-    <Alert variant={notification.type}>
+    <Alert severity={notification.type}>
       {notification.content}
     </Alert>
-    // <div className={notification.type}>
-    //   {notification.content}
-    // </div>
   )
 }
 

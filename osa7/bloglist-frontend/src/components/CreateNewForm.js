@@ -6,6 +6,7 @@ import { createBlog } from '../reducers/blogReducer'
 import blogService from '../services/blogs'
 import Togglable from './Togglable'
 
+import { TextField, Button } from '@material-ui/core'
 
 const CreateNewForm = ({ user }) => {
   const [title, setTitle] = useState('')
@@ -48,41 +49,27 @@ const CreateNewForm = ({ user }) => {
 
   return (
     <div>
-      <Togglable buttonId='new-blog-button' buttonLabel='new blog'>
-        <div>
-          <h2>create new</h2>
+
+      <div>
+        <Togglable buttonId='new-blog-button' buttonLabel='new blog'>
+          <h2>Create new</h2>
           <form onSubmit={createNewBlog}>
             <div>
-              title:
-              <input type="text"
-                id='title'
-                value={title}
-                name="Title"
-                onChange={({ target }) => setTitle(target.value)}
-              />
+              <TextField label="title" onChange={({ target }) => setTitle(target.value)} />
             </div>
             <div>
-              author:
-              <input type="text"
-                id='author'
-                value={author}
-                name="author"
-                onChange={({ target }) => setAuthor(target.value)}
-              />
+              <TextField label="author" onChange={({ target }) => setAuthor(target.value)} />
             </div>
             <div>
-              url:
-              <input type="text"
-                id='url'
-                value={url}
-                name="Url"
-                onChange={({ target }) => setUrl(target.value)}
-              />
+              <TextField label="url" onChange={({ target }) => setUrl(target.value)} />
             </div>
-            <button id='create-button' type="submit">create</button>
+            <Button variant="contained" color="primary" type="submit" >
+              create
+            </Button>
           </form>
-        </div>
-      </Togglable>
+        </Togglable>
+      </div>
+
     </div>
   )
 }

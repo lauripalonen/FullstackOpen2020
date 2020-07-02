@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { userLogin } from '../reducers/loginReducer'
 import { useHistory } from 'react-router-dom'
-import { Form } from 'react-bootstrap'
 
 import { TextField, Button } from '@material-ui/core'
 
@@ -20,7 +19,7 @@ const LoginForm = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     dispatch(userLogin(values.username, values.password))
-    setValues({ username: '', password: ''})
+    setValues({ username: '', password: '' })
     history.push('/blogs')
   }
 
@@ -40,15 +39,6 @@ const LoginForm = () => {
           </Button>
         </div>
       </form>
-      {/* <Form onSubmit={handleLogin}>
-      <Form.Group>
-        <Form.Label>username:</Form.Label>
-        <Form.Control type="text" name="username" />
-        <Form.Label>password:</Form.Label>
-        <Form.Control type="password" name="password" />
-        <Button variant="primary" type="submit">login</Button>
-      </Form.Group>
-    </Form> */}
     </div >
   )
 }
