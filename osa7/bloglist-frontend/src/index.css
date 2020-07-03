@@ -1,3 +1,7 @@
+html {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
 .notification {
   background-color: lightgrey;
   color: green;
@@ -17,13 +21,13 @@
 
 .notification-placeholder {
   height: 3em;
-  margin-bottom: 1em;
+  margin: 0.5em 0em 1em 0em;
 }
 
 .blog-item {
   padding: 0.5em;
-  border: 0.1em solid black;
   margin: 0.2em;
+  background-color: #CAD0F7;
 }
 
 .top-bar {

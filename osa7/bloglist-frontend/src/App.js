@@ -43,7 +43,6 @@ const App = () => {
     <Container>
       <Router>
         <NavBar loggedUser={loggedUser} />
-        <h1>Blog app</h1>
         <NotificationBar notification={notification} />
         {!loggedUser ? <LoginForm /> :
           <Switch>

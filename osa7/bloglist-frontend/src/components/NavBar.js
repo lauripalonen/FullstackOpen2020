@@ -24,6 +24,7 @@ const NavBar = ({ loggedUser }) => {
     return (
       <AppBar position='static'>
         <Toolbar>
+          <h3>Blog App</h3>
           <Button color='inherit' component={Link} to='/blogs'>
             blogs
           </Button>
@@ -37,7 +38,19 @@ const NavBar = ({ loggedUser }) => {
       </AppBar>
     )
   }
-  return (<div></div>)
+  return (
+    <AppBar position='static'>
+      <Toolbar>
+        <h3>Blog App</h3>
+        <Button color='inherit' component={Link} to='/login'>
+          blogs
+        </Button>
+        <Button color='inherit' component={Link} to='/login'>
+          users
+        </Button>
+      </Toolbar>
+    </AppBar>
+  )
 }
 
 export default NavBar

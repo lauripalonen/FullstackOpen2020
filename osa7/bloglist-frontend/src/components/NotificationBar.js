@@ -6,9 +6,11 @@ const NotificationBar = ({ notification }) => {
     return <div className='notification-placeholder'></div>
   }
   return (
-    <Alert severity={notification.type}>
-      {notification.content}
-    </Alert>
+    <div className='notification-placeholder'>
+      <Alert severity={notification.type}>
+        {notification.content}
+      </Alert>
+    </div>
   )
 }
 

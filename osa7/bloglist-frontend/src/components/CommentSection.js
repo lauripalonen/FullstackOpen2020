@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { sendError, clearNotification } from '../reducers/notificationReducer'
 import { initializeComments, postComment } from '../reducers/commentReducer'
 
+import { List, ListItem, ListItemText, TextField, Button } from '@material-ui/core'
+
 
 const CommentSection = ({ blog }) => {
   const dispatch = useDispatch()
@@ -28,18 +30,25 @@ const CommentSection = ({ blog }) => {
 
   const commentField = (
     <form onSubmit={handleComment}>
-      <input type="text"
-        id='comment'
-        name="Comment"
-      />
-      <button type='submit'>comment</button>
+      <div>
+        <TextField label="new comment" />
+      </div>
+      <Button variant="contained" color="primary" type="submit" >
+        comment
+      </Button>
     </form>
   )
 
   const CommentList = ({ comments }) => (
-    <ul>
-      {comments ? comments.map(c => <li key={c}>{c}</li>) : ''}
-    </ul>
+    <div>
+      <List>
+        {comments ? comments.map(c =>
+          <ListItem dense={true} key={c}>
+            <ListItemText primary={c} />
+          </ListItem>) : <ListItem></ListItem>
+        }
+      </List>
+    </div>
   )
 
   return (
