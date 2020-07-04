@@ -5,35 +5,30 @@ import { removeBlog, likeBlog } from '../reducers/blogReducer'
 import { sendError, sendNotification, clearNotification } from '../reducers/notificationReducer'
 import { useParams, useHistory } from 'react-router-dom'
 
-import { Card, CardContent, Typography, Button, Divider, makeStyles, CardHeader } from '@material-ui/core'
+import { Card, CardContent, Button, makeStyles } from '@material-ui/core'
+import { useN03TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n03';
+import { useLightTopShadowStyles } from '@mui-treasury/styles/shadow/lightTop'
+import BrandCardHeader from '@mui-treasury/components/cardHeader/brand'
+import TextInfoContent from '@mui-treasury/components/content/textInfo'
+import cx from 'clsx'
 
 import blogService from '../services/blogs'
 import CommentSection from './CommentSection'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
-    borderRadius: 12,
-    minWidth: 256,
-    textAlign: 'center',
+    maxWidth: 343,
+    borderRadius: 20,
   },
-  header: {
-    textAlign: 'center',
-    spacing: 10,
-  },
-  list: {
-    padding: '20px',
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  action: {
-    display: 'flex',
-    justifyContent: 'space-around',
+  content: {
+    padding: 24,
   },
 }))
 
 const Blog = ({ loggedUser }) => {
-  const classes = useStyles()
+  const styles = useN03TextInfoContentStyles();
+  const shadowStyles = useLightTopShadowStyles();
+  const cardStyles = useStyles();
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -75,39 +70,39 @@ const Blog = ({ loggedUser }) => {
 
   }
 
+  const cardBody = () => {
+    const link = <a href={`//${blog.url}`}>{blog.url}</a>
+
+    return (
+      <p>
+        <a href={`//${blog.url}`}>{blog.url}</a> <br />
+        added by {blog.user.username}
+      </p>
+    )
+  }
+
   return (
-    <Card className={classes.root}>
-      <CardHeader title={`${blog.title} - ${blog.author}`} className={classes.header} />
-      <Divider variant="middle" />
-      <CardContent>
-        <Typography variant="h6" align="center">
-          <a href={`//${blog.url}`}>{blog.url}</a>
-        </Typography>
-        <Typography align="left">
-          {blog.likes} likes
-          <Button variant="contained" color="primary" className={classes.button} onClick={(e) => handleLike(blog, e)}>
-            like
-          </Button>
-        </Typography>
-        <Typography align="left">
-          added by {loggedUser.username}
-          {blog.user.username === loggedUser.username ?
-            <Button variant="contained" color="primary" className={classes.button} onClick={handleRemoveBlog}>
-              remove
-            </Button> : null}
-        </Typography>
-        <Divider variant="middle" />
+    <Card className={cx(cardStyles.root, shadowStyles.root)}>
+      <BrandCardHeader extra={`${blog.likes} likes`} />
+      <CardContent className={cardStyles.content}>
+        <TextInfoContent
+          classes={styles}
+          overline={blog.author}
+          heading={blog.title}
+          body={
+            cardBody()
+          }
+        />
+        {blog.user.username === loggedUser.username ?
+          <Button variant="contained" color="primary" onClick={handleRemoveBlog}>
+            remove
+          </Button> : null}
+        <Button variant="contained" color="primary" onClick={(e) => handleLike(blog, e)}>
+          like
+        </Button>
         <CommentSection blog={blog} handleComment={handleComment} />
       </CardContent>
-    </Card>
-    // <div className='blog-item'>
-    //   <h2>{blog.title} {blog.author}</h2>
-    //   <a href={`//${blog.url}`}>{blog.url}</a> <br />
-    //   {blog.likes} likes <button id='like-button' onClick={(e) => handleLike(blog, e)}>like</button><br />
-    //   added by {loggedUser.username} <br />
-    //   {blog.user.username === loggedUser.username ? <button id='remove-blog-button' onClick={handleRemoveBlog}>remove</button> : null}
-    //   <CommentSection blog={blog} handleComment={handleComment} />
-    // </div>
+    </Card >
   )
 }
 
