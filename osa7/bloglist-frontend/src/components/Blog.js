@@ -26,9 +26,9 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Blog = ({ loggedUser }) => {
-  const styles = useN03TextInfoContentStyles();
-  const shadowStyles = useLightTopShadowStyles();
-  const cardStyles = useStyles();
+  const styles = useN03TextInfoContentStyles()
+  const shadowStyles = useLightTopShadowStyles()
+  const cardStyles = useStyles()
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -70,17 +70,6 @@ const Blog = ({ loggedUser }) => {
 
   }
 
-  const cardBody = () => {
-    const link = <a href={`//${blog.url}`}>{blog.url}</a>
-
-    return (
-      <p>
-        <a href={`//${blog.url}`}>{blog.url}</a> <br />
-        added by {blog.user.username}
-      </p>
-    )
-  }
-
   return (
     <Card className={cx(cardStyles.root, shadowStyles.root)}>
       <BrandCardHeader extra={`${blog.likes} likes`} />
@@ -90,7 +79,13 @@ const Blog = ({ loggedUser }) => {
           overline={blog.author}
           heading={blog.title}
           body={
-            cardBody()
+            <a href={`//${blog.url}`}>{blog.url}</a>
+          }
+        />
+        <TextInfoContent
+          classes={styles}
+          body={
+            `added by ${blog.user.username}`
           }
         />
         {blog.user.username === loggedUser.username ?
