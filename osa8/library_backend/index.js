@@ -1,4 +1,5 @@
 const { ApolloServer, gql, addResolveFunctionsToSchema } = require('apollo-server')
+const { v1: uuid } = require('uuid')
 
 let authors = [
   {
@@ -95,7 +96,7 @@ const typeDefs = gql`
   type Author {
     name: String!
     id: ID!
-    born: Int!
+    born: Int
     bookCount: Int!
   }
 
@@ -104,6 +105,15 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+  }
+
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]!
+    ): Book
   }
 `
 
@@ -129,6 +139,20 @@ const resolvers = {
       return result
     },
     allAuthors: () => authors
+  },
+
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args, id: uuid() }
+
+      if (!books.find(b => b.author === args.author)) {
+        const author = { name: args.author, id: uuid(), born: null }
+        authors = authors.concat(author)
+      }
+
+      books = books.concat(book)
+      return book
+    }
   }
 }
 
