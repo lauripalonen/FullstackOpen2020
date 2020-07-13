@@ -1,5 +1,24 @@
-const { ApolloServer, gql, addResolveFunctionsToSchema } = require('apollo-server')
+require('dotenv').config()
+
+const { ApolloServer, gql } = require('apollo-server')
 const { v1: uuid } = require('uuid')
+const mongoose = require('mongoose')
+const Author = require('./models/author')
+const Book = require('./models/book')
+
+mongoose.set('useFindAndModify', false)
+
+const MONGODB_URI = process.env.MONGODB_URI
+
+console.log('connecting to MONGODB')
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('connected to MongoDB!')
+  })
+  .catch((error) => {
+    console.log('error while connecting to MongoDB: ', error.message)
+  })
 
 let authors = [
   {
@@ -26,11 +45,6 @@ let authors = [
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
 ]
-
-/*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
-*/
 
 let books = [
   {
@@ -88,7 +102,7 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     id: ID!
     genres: [String!]!
   }
@@ -160,7 +174,7 @@ const resolvers = {
 
     editAuthor: (root, args) => {
       const author = authors.find(a => a.name === args.name)
-      if(!author){
+      if (!author) {
         return null
       }
       author.born = args.setBornTo
