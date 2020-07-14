@@ -5,6 +5,10 @@ import { ALL_BOOKS } from '../queries'
 const Books = (props) => {
   const result = useQuery(ALL_BOOKS)
 
+  if(result.error){
+    console.log('error: ', result.error)
+  }
+
   if (result.loading) {
     return <div>loading...</div>
   }
