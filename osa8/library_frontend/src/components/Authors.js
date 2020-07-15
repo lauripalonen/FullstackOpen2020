@@ -33,7 +33,10 @@ const Authors = (props) => {
     return null
   }
 
-  const authors = [...result.data.allAuthors]
+  const authors = [
+    ...result.data.allAuthors
+  ]
+  console.log(authors)
 
   const options = authors.map(a => {
     return (
