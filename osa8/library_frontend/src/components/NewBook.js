@@ -25,7 +25,13 @@ const NewBook = (props) => {
 
     const variables = { variables: { title, author, published, genres } }
     console.log('submitting with variables: ', variables)
-    createBook(variables)
+
+    try {
+      await createBook(variables)
+    } catch (error) {
+      return null
+    }
+
     console.log('submitted!')
     setTitle('')
     setPublished('')
@@ -41,6 +47,7 @@ const NewBook = (props) => {
 
   if (mutationError) {
     console.log('mutatationError: ', mutationError)
+    return null
   }
 
   return (
