@@ -177,11 +177,16 @@ const resolvers = {
         id: user._id,
       }
 
-      return { value: jwt.sign(userForToken, JWT_SECRET) }
+      const returnValue = { value: jwt.sign(userForToken, JWT_SECRET) }
+
+      console.log('Returning value: ', returnValue)
+
+      return returnValue
     },
 
     editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser
+      console.log('CURRENT USER: ', context)
 
       if (!currentUser) {
         throw new AuthenticationError('not authenticated')
@@ -204,12 +209,14 @@ const server = new ApolloServer({
   resolvers,
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
+    console.log('req: ', req.headers.authorization)
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET
       )
       const currentUser = await User
-        .findById(decodedToken.id).populate('friends')
+        .findById(decodedToken.id)
+
       return { currentUser }
     }
   }
