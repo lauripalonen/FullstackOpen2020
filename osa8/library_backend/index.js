@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const Author = require('./models/author')
 const Book = require('./models/book')
 const User = require('./models/user')
+const book = require('./models/book')
 
 mongoose.set('useFindAndModify', false)
 
@@ -33,19 +34,19 @@ const typeDefs = gql`
     value: String!
   }
 
+  type Author {
+    name: String!
+    id: ID!
+    born: Int
+    bookCount: Int
+  }
+
   type Book {
     title: String!
     published: Int!
     author: Author!
     id: ID!
     genres: [String!]!
-  }
-
-  type Author {
-    name: String!
-    id: ID!
-    born: Int
-    bookCount: Int
   }
 
   type Query {
@@ -75,6 +76,8 @@ const typeDefs = gql`
       username: String!
       password: String!
     ): Token
+    clearAll: String
+    initiateDatabase: String
   }
 `
 
@@ -92,8 +95,17 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
+      const authors = await Author.find({})
       const books = await Book.find({})
 
+      books.map(b => {
+        const author = authors.find(a => a._id.toString() === b.author.toString())
+        b.author = author
+
+        return b
+      })
+
+      console.log('returning books: ', books)
       return books
       // let result = [...books]
 
@@ -116,6 +128,83 @@ const resolvers = {
   },
 
   Mutation: {
+    clearAll: () => {
+
+      Book.collection.deleteMany({}, (err, result) => {
+        if (err) {
+          console.log('encountered error: ', err)
+        } else {
+          console.log('Books deleted')
+        }
+      })
+
+      Author.collection.deleteMany({}, (err, result) => {
+        if (err) {
+          console.log('encountered error: ', err)
+        } else {
+          console.log('Authors deleted')
+        }
+      })
+
+    },
+
+    initiateDatabase: async () => {
+      let author = new Author({
+        name: "Carlo Rovelli",
+        born: 1956,
+        bookCount: 1
+      })
+
+      try {
+        author = await author.save()
+        console.log('saved author: ', author)
+      } catch (error) {
+        console.log('encountered an error: ', error)
+      }
+
+      let book = new Book({
+        title: "The Order of Time",
+        published: 2017,
+        author: author,
+        genres: ["science", "time", "quantum physics"]
+      })
+
+      try {
+        book = await book.save()
+        console.log('book saved: ', book)
+      } catch (error) {
+        console.log('encountered an error: ', error)
+      }
+
+      author = new Author({
+        name: "J.D. Salinger",
+        born: 1919,
+        bookCount: 1
+      })
+
+      try {
+        author = await author.save()
+        console.log('saved author: ', author)
+      } catch (error) {
+        console.log('encountered an error: ', error)
+      }
+
+      book = new Book({
+        title: "The Catcher in the Rye",
+        published: 1961,
+        author: author,
+        genres: ["coming-of-age", "fiction"]
+      })
+
+      try {
+        book = await book.save()
+        console.log('book saved: ', book)
+      } catch (error) {
+        console.log('encountered an error: ', error)
+      }
+
+    },
+
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser
 
@@ -179,8 +268,6 @@ const resolvers = {
 
       const returnValue = { value: jwt.sign(userForToken, JWT_SECRET) }
 
-      console.log('Returning value: ', returnValue)
-
       return returnValue
     },
 
@@ -209,7 +296,6 @@ const server = new ApolloServer({
   resolvers,
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
-    console.log('req: ', req.headers.authorization)
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
       const decodedToken = jwt.verify(
         auth.substring(7), JWT_SECRET
