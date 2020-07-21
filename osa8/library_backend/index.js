@@ -77,7 +77,7 @@ const typeDefs = gql`
       password: String!
     ): Token
     clearAll: String
-    initiateDatabase: String
+    initializeDatabase: String
   }
 `
 
@@ -105,19 +105,7 @@ const resolvers = {
         return b
       })
 
-      console.log('returning books: ', books)
       return books
-      // let result = [...books]
-
-      // if (args.author) {
-      //   result = result.filter(b => b.author === args.author)
-      // }
-
-      // if (args.genre) {
-      //   result = result.filter(b => b.genres.includes(args.genre))
-      // }
-
-      // return result
     },
     allAuthors: () => {
       return Author.find({})
@@ -146,62 +134,54 @@ const resolvers = {
         }
       })
 
+      return 'database cleared'
+
     },
 
-    initiateDatabase: async () => {
-      let author = new Author({
+    initializeDatabase: async () => {
+      let author01 = new Author({
         name: "Carlo Rovelli",
         born: 1956,
         bookCount: 1
       })
 
-      try {
-        author = await author.save()
-        console.log('saved author: ', author)
-      } catch (error) {
-        console.log('encountered an error: ', error)
-      }
-
-      let book = new Book({
-        title: "The Order of Time",
-        published: 2017,
-        author: author,
-        genres: ["science", "time", "quantum physics"]
-      })
-
-      try {
-        book = await book.save()
-        console.log('book saved: ', book)
-      } catch (error) {
-        console.log('encountered an error: ', error)
-      }
-
-      author = new Author({
+      let author02 = new Author({
         name: "J.D. Salinger",
         born: 1919,
         bookCount: 1
       })
 
       try {
-        author = await author.save()
-        console.log('saved author: ', author)
+        author01 = await author01.save()
+        author02 = await author02.save()
+        console.log('authors saved')
       } catch (error) {
         console.log('encountered an error: ', error)
       }
 
-      book = new Book({
+      const book01 = new Book({
+        title: "The Order of Time",
+        published: 2017,
+        author: author01,
+        genres: ["science", "time", "quantum physics"]
+      })
+
+      const book02 = new Book({
         title: "The Catcher in the Rye",
         published: 1961,
-        author: author,
+        author: author02,
         genres: ["coming-of-age", "fiction"]
       })
 
       try {
-        book = await book.save()
-        console.log('book saved: ', book)
+        await book01.save()
+        await book02.save()
+        console.log('books saved')
       } catch (error) {
         console.log('encountered an error: ', error)
       }
+
+      return 'database initialized'
 
     },
 
