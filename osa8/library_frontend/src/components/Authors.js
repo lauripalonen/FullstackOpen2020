@@ -54,6 +54,29 @@ const Authors = (props) => {
     setBorn('')
   }
 
+  const birthyearForm = (
+    <div>
+      <h3>Set birthyear</h3>
+      <form onSubmit={submit}>
+        <div>
+          <Select
+            value={selection}
+            onChange={handleSelect}
+            options={options}
+          />
+        </div>
+        <div>
+          born
+            <input
+            value={born}
+            onChange={({ target }) => setBorn(Number(target.value))}
+          />
+        </div>
+        <button type="submit">update author</button>
+      </form>
+    </div>
+  )
+
   return (
     <div>
       <h2>authors</h2>
@@ -77,7 +100,8 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-      <div>
+      {props.token ? birthyearForm : <div></div>}
+      {/* <div>
         <h3>Set birthyear</h3>
         <form onSubmit={submit}>
           <div>
@@ -96,7 +120,7 @@ const Authors = (props) => {
           </div>
           <button type="submit">update author</button>
         </form>
-      </div>
+      </div> */}
     </div>
   )
 }
