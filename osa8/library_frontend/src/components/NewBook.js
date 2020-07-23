@@ -19,6 +19,10 @@ const NewBook = (props) => {
     return null
   }
 
+  if (!props.token) {
+    return null
+  }
+
   const submit = async (event) => {
     event.preventDefault()
     console.log(authors)

@@ -9,25 +9,14 @@ const App = () => {
   const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
 
-  // if (!token) {
-  //   return (
-  //     <div>
-  //       <h2>Login</h2>
-  //       <LoginForm
-  //         setToken={setToken}
-  //       />
-  //     </div>
-  //   )
-  // }
-
-
   return (
     <div>
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
+        {token ? <button onClick={() => setPage('add')}>add book</button> : null}
         {token ?
-          <button onClick={() => setPage('add')}>add book</button> :
+          <button onClick={() => setToken(null)}>logout</button> :
           <button onClick={() => setPage('login')}>login</button>}
       </div>
 
@@ -38,6 +27,7 @@ const App = () => {
 
       <Books
         show={page === 'books'}
+        token={token}
       />
 
       <NewBook
