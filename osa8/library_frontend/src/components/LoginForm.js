@@ -29,6 +29,8 @@ const LoginForm = ({ show, setToken, setPage }) => {
     event.preventDefault()
 
     login({ variables: { username, password } })
+    setUsername('')
+    setPassword('')
     setPage('authors')
   }
 
