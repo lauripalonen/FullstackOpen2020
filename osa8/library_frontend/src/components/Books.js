@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
 
 const Books = (props) => {
-  const [books, setBooks] = useState(null)
+  const [filter, setFilter] = useState(null)
 
   const result = useQuery(ALL_BOOKS)
-
-  useEffect(() => {
-    if (result.data) {
-      const books = result.data.allBooks
-      console.log('effect: ', books)
-      setBooks(books)
-    }
-  }, [result])
 
   if (result.error) {
     console.log('error: ', result.error)
@@ -28,30 +20,34 @@ const Books = (props) => {
     return null
   }
 
-  const genres = (books) => {
-    let genres = []
-    books.forEach(b => b.genres.forEach(g => {
+  const books = result.data.allBooks
+  let genres = []
+
+  books.forEach(b => {
+    b.genres.forEach(g => {
       if (!genres.includes(g)) {
         genres = genres.concat(g)
       }
-    }))
+    })
+  })
 
-    return genres
+  const booksToShow = () => {
+    if (filter) {
+      return (
+        books.filter(b => b.genres.includes(filter))
+      )
+    }
+
+    return books
+
   }
 
-  const filterByGenre = (genre) => {
-    const filteredBooks = books.filter(b => b.genres.includes(genre))
-    setBooks(filteredBooks)
-  }
 
-  const GenreButtons = ({ books }) => {
-    console.log('genrebuttons books: ', books)
-    const genreArray = genres(books)
-    console.log(genreArray)
-
+  const GenreButtons = () => {
     return (
       <div>
-        {genreArray.map(g => <button key={g} onClick={() => filterByGenre(g)}>{g}</button>)}
+        {genres.map(g => <button key={g} onClick={() => setFilter(g)}>{g}</button>)}
+        <button onClick={() => setFilter(null)}>all</button>
       </div>
     )
   }
@@ -71,7 +67,7 @@ const Books = (props) => {
               published
             </th>
           </tr>
-          {books.map(a =>
+          {booksToShow().map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
