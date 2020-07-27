@@ -32,6 +32,7 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+        token={token}
       />
 
       <LoginForm

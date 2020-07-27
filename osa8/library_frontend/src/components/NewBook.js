@@ -33,7 +33,7 @@ const NewBook = (props) => {
     try {
       await createBook(variables)
     } catch (error) {
-      return null
+      console.log('encountered an error!', error)
     }
 
     console.log('submitted!')
@@ -51,7 +51,6 @@ const NewBook = (props) => {
 
   if (mutationError) {
     console.log('mutatationError: ', mutationError)
-    return null
   }
 
   return (
