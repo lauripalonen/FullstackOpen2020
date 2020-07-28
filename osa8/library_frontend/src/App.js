@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -46,13 +46,6 @@ const App = () => {
         <button onClick={() => setPage('books')}>books</button>
         {token ? loggedUserFunctionalities() :
           <button onClick={() => setPage('login')}>login</button>}
-        {/* {token ? <button onClick={() => setPage('add')}>add book</button> : null}
-        {token ?
-          <button onClick={() => {
-            setToken(null)
-            setFavoriteGenre(null)
-          }}>logout</button> :
-          <button onClick={() => setPage('login')}>login</button>} */}
       </div>
 
       <Authors
