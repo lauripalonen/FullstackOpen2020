@@ -54,8 +54,8 @@ const Books = (props) => {
 
   return (
     <div>
+      {props.favoriteGenre ? <div>{props.favoriteGenre}</div> : null}
       <h2>books</h2>
-
       <table>
         <tbody>
           <tr>
