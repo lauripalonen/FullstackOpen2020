@@ -62,6 +62,7 @@ const App = () => {
       <NewBook
         show={page === 'add'}
         token={token}
+        favoriteGenre={favoriteGenre}
       />
 
       <LoginForm

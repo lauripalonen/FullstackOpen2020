@@ -13,7 +13,10 @@ const Books = (props) => {
   }
 
   if (result.loading) {
-    return <div>loading...</div>
+    return <div>
+      <h2>books</h2>
+      loading...
+      </div>
   }
 
   if (!props.show) {
@@ -21,7 +24,10 @@ const Books = (props) => {
   }
 
   if (loading) {
-    return <div>loading...</div>
+    return <div>
+      <h2>books</h2>
+    loading...
+    </div>
   }
 
   const books = result.data.allBooks

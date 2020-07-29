@@ -1,6 +1,12 @@
 import React from 'react'
+import { useQuery } from '@apollo/client'
+import { ALL_BOOKS } from '../queries'
 
 const Recommendations = (props) => {
+
+  const { loading, data, error } = useQuery(
+    ALL_BOOKS,
+    { variables: { genre: props.genre } })
 
   if (!props.show) {
     return null
@@ -10,11 +16,9 @@ const Recommendations = (props) => {
     return null
   }
 
-  console.log(props.books)
-
-  const booksToShow = props.books.filter(b =>
-    b.genres.includes(props.genre)
-  )
+  if (loading) {
+    return <div>loading...</div>
+  }
 
   return (
     <div>
@@ -34,7 +38,7 @@ const Recommendations = (props) => {
                 published
             </th>
             </tr>
-            {booksToShow.map(a =>
+            {data.allBooks.map(a =>
               <tr key={a.title}>
                 <td>{a.title}</td>
                 <td>{a.author.name}</td>
