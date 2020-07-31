@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from '../queries'
 
 const NewBook = (props) => {
@@ -19,8 +19,6 @@ const NewBook = (props) => {
     }
   )
 
-  const authors = useQuery(ALL_AUTHORS)
-
   if (!props.show) {
     return null
   }
@@ -31,10 +29,8 @@ const NewBook = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-    console.log(authors)
 
     const variables = { variables: { title, author, published, genres } }
-    console.log('submitting with variables: ', variables)
 
     try {
       await createBook(variables)
@@ -42,7 +38,6 @@ const NewBook = (props) => {
       console.log('encountered an error!', error)
     }
 
-    console.log('submitted!')
     setTitle('')
     setPublished('')
     setAuthor('')

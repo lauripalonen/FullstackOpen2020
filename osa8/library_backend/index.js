@@ -132,16 +132,12 @@ const resolvers = {
       Book.collection.deleteMany({}, (err, result) => {
         if (err) {
           console.log('encountered error: ', err)
-        } else {
-          console.log('Books deleted')
         }
       })
 
       Author.collection.deleteMany({}, (err, result) => {
         if (err) {
           console.log('encountered error: ', err)
-        } else {
-          console.log('Authors deleted')
         }
       })
 
@@ -165,7 +161,6 @@ const resolvers = {
       try {
         author01 = await author01.save()
         author02 = await author02.save()
-        console.log('authors saved')
       } catch (error) {
         console.log('encountered an error: ', error)
       }
@@ -187,7 +182,6 @@ const resolvers = {
       try {
         await book01.save()
         await book02.save()
-        console.log('books saved')
       } catch (error) {
         console.log('encountered an error: ', error)
       }
@@ -203,13 +197,10 @@ const resolvers = {
         throw new AuthenticationError('not authenticated')
       }
 
-      console.log('args.author: ', args.author)
       let author = await Author.findOne({ name: args.author })
-      console.log('Search result for author: ', author)
 
       if (!author) {
         author = new Author({ name: args.author })
-        console.log('Author not found, created new: ', author)
 
         try {
           await author.save()
@@ -221,7 +212,6 @@ const resolvers = {
       }
 
       const book = new Book({ ...args, author: author })
-      console.log('created new book: ', book)
 
       try {
         await book.save()
@@ -263,14 +253,12 @@ const resolvers = {
         value: jwt.sign(userForToken, JWT_SECRET),
         favoriteGenre: user.favoriteGenre
       }
-      console.log(returnValue)
 
       return returnValue
     },
 
     editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser
-      console.log('CURRENT USER: ', context)
 
       if (!currentUser) {
         throw new AuthenticationError('not authenticated')

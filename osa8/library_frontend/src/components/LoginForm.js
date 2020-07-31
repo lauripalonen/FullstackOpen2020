@@ -9,7 +9,6 @@ const LoginForm = ({ show, setToken, setPage, setFavoriteGenre }) => {
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
       console.log('Encountered an error: ', error)
-      // setError(error.graphQLErrors[0].message)
     }
   })
 

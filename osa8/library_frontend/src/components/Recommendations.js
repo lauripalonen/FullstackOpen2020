@@ -4,7 +4,7 @@ import { ALL_BOOKS } from '../queries'
 
 const Recommendations = (props) => {
 
-  const { loading, data, error } = useQuery(
+  const { loading, data } = useQuery(
     ALL_BOOKS,
     { variables: { genre: props.genre } })
 
