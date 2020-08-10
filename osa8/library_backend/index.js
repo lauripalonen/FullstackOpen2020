@@ -12,6 +12,7 @@ const Author = require('./models/author')
 const Book = require('./models/book')
 const User = require('./models/user')
 const book = require('./models/book')
+const author = require('./models/author')
 
 mongoose.set('useFindAndModify', false)
 
@@ -82,8 +83,7 @@ const typeDefs = gql`
       username: String!
       password: String!
     ): Token
-    clearAll: String
-    initializeDatabase: String
+    resetDatabase: String
   }
   type Subscription {
     bookAdded: Book!
@@ -91,14 +91,6 @@ const typeDefs = gql`
 `
 
 const resolvers = {
-  Author: {
-    bookCount: async (root) => {
-      const books = await Book.find({
-        author: root.id
-      })
-      return books.length
-    }
-  },
 
   Query: {
     bookCount: () => Book.collection.countDocuments(),
@@ -117,8 +109,8 @@ const resolvers = {
       return books
     },
 
-    allAuthors: () => {
-      return Author.find({})
+    allAuthors: async () => {
+      return await Author.find({})
     },
 
     me: (root, args, context) => {
@@ -127,8 +119,7 @@ const resolvers = {
   },
 
   Mutation: {
-    clearAll: () => {
-
+    resetDatabase: async () => {
       Book.collection.deleteMany({}, (err, result) => {
         if (err) {
           console.log('encountered error: ', err)
@@ -141,11 +132,7 @@ const resolvers = {
         }
       })
 
-      return 'database cleared'
 
-    },
-
-    initializeDatabase: async () => {
       let author01 = new Author({
         name: "Carlo Rovelli",
         born: 1956,
@@ -165,14 +152,14 @@ const resolvers = {
         console.log('encountered an error: ', error)
       }
 
-      const book01 = new Book({
+      let book01 = new Book({
         title: "The Order of Time",
         published: 2017,
         author: author01,
         genres: ["science", "time", "quantum physics"]
       })
 
-      const book02 = new Book({
+      let book02 = new Book({
         title: "The Catcher in the Rye",
         published: 1961,
         author: author02,
@@ -180,12 +167,11 @@ const resolvers = {
       })
 
       try {
-        await book01.save()
-        await book02.save()
+        book01 = await book01.save()
+        book02 = await book02.save()
       } catch (error) {
         console.log('encountered an error: ', error)
       }
-
       return 'database initialized'
 
     },
@@ -200,7 +186,7 @@ const resolvers = {
       let author = await Author.findOne({ name: args.author })
 
       if (!author) {
-        author = new Author({ name: args.author })
+        author = new Author({ name: args.author, bookCount: 0 })
 
         try {
           await author.save()
@@ -211,10 +197,12 @@ const resolvers = {
         }
       }
 
-      const book = new Book({ ...args, author: author })
+      let book = new Book({ ...args, author: author })
 
       try {
-        await book.save()
+        book = await book.save()
+        author.bookCount = author.bookCount + 1
+        await author.save()
       } catch (error) {
         throw new UserInputError(error.message, {
           invalidArgs: args,
