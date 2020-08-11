@@ -6,6 +6,7 @@ interface returnValues {
 }
 
 const parseArguments = (args: Array<string>): returnValues => {
+  console.log('received args: ', args)
   if (args.length < 4) throw new Error('Not enough arguments');
 
   if (args[1].endsWith('bmiCalculator.ts')) {
@@ -15,8 +16,8 @@ const parseArguments = (args: Array<string>): returnValues => {
       return {
         height: Number(args[2]),
         weight: Number(args[3]),
-        trainingHours: null,
-        target: null
+        trainingHours: [],
+        target: 0
       }
     } else {
       throw new Error('Provided values were not numbers!');
@@ -32,14 +33,16 @@ const parseArguments = (args: Array<string>): returnValues => {
       return {
         trainingHours: trainingHours,
         target: target,
-        height: null,
-        weight: null
+        height: 0,
+        weight: 0
       };
     } else {
       throw new Error('Provided values contained non-numeric characters!');
     }
 
   }
+
+  throw new Error('unexpected error')
 }
 
 export default parseArguments;

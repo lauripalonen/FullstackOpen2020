@@ -23,6 +23,8 @@ const ratingCalculator = (difference: number): Rating => {
       return { value: 2, description: "Ok!" };
     case (difference > 1):
       return { value: 1, description: "You can do better!" }
+    default:
+      throw new Error('Encountered an unexpected error')
   }
 }
 

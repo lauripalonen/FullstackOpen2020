@@ -21,6 +21,8 @@ const bmiCalculator = (height: number, weight: number): string => {
       return 'Obese Class II (Severely obese)'
     case (result > 40):
       return 'Obese Class III (Very severely'
+    default:
+      throw new Error('Encountered an unexpected error')
   }
 }
 
@@ -30,3 +32,5 @@ try {
 } catch (e) {
   console.log('Error: ', e.message)
 }
+
+export { bmiCalculator }
