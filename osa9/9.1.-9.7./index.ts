@@ -14,7 +14,7 @@ app.get('/bmi', (req, res) => {
   if (!req.query.height || !req.query.weight) {
     res.send({
       error: "missing parameters"
-    })
+    });
   }
 
   const height = Number(req.query.height);
@@ -23,7 +23,7 @@ app.get('/bmi', (req, res) => {
   if (isNaN(height) || isNaN(weight)) {
     res.send({
       error: "malformatted parameters"
-    })
+    });
   }
 
   const bmi = bmiCalculator(height, weight);

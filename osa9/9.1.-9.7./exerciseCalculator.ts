@@ -1,4 +1,4 @@
-import parseArguments from './argParser'
+import parseArguments from './argParser';
 
 interface Feedback {
   periodLength: number,
@@ -22,11 +22,11 @@ const ratingCalculator = (difference: number): Rating => {
     case (difference <= 1):
       return { value: 2, description: "Ok!" };
     case (difference > 1):
-      return { value: 1, description: "You can do better!" }
+      return { value: 1, description: "You can do better!" };
     default:
-      throw new Error('Encountered an unexpected error')
+      throw new Error('Encountered an unexpected error');
   }
-}
+};
 
 const calculateExercises = (exercises: Array<number>, target: number): Feedback => {
 
@@ -35,7 +35,7 @@ const calculateExercises = (exercises: Array<number>, target: number): Feedback 
       return trainingDays + 1;
     }
     return trainingDays;
-  }
+  };
 
   const periodLength = exercises.length;
   const trainingDays = exercises.reduce(dayReducer, 0);
@@ -52,12 +52,13 @@ const calculateExercises = (exercises: Array<number>, target: number): Feedback 
     ratingDescription: rating.description,
     target: target,
     average: average
-  }
-}
+  };
+};
 
 try {
-  const value = parseArguments(process.argv)
-  console.log(calculateExercises(value.trainingHours, value.target))
+  const value = parseArguments(process.argv);
+  console.log(calculateExercises(value.trainingHours, value.target));
 } catch (e) {
-  console.log('Error: ', e.message)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  console.log('Error: ', e.message);
 }
