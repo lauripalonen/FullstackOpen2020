@@ -1,8 +1,8 @@
-const calculateBmi = (height: number, weight: number): string => {
-  const heightSquered = (height / 100) ^ 2
-  const result = weight / heightSquered
+import parseArguments from './argParser'
 
-  console.log('BMI is: ', result)
+const bmiCalculator = (height: number, weight: number): string => {
+  const heightSquared = (height / 100) ^ 2
+  const result = weight / heightSquared
 
   switch (true) {
     case (result < 15):
@@ -24,4 +24,9 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 }
 
-console.log(calculateBmi(180, 74))
+try {
+  const values = parseArguments(process.argv)
+  console.log(bmiCalculator(values.height, values.weight))
+} catch (e) {
+  console.log('Error: ', e.message)
+}

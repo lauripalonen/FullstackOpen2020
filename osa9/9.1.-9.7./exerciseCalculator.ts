@@ -1,3 +1,5 @@
+import parseArguments from './argParser'
+
 interface Feedback {
   periodLength: number,
   trainingDays: number,
@@ -51,4 +53,9 @@ const calculateExercises = (exercises: Array<number>, target: number): Feedback 
   }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+  const value = parseArguments(process.argv)
+  console.log(calculateExercises(value.trainingHours, value.target))
+} catch (e) {
+  console.log('Error: ', e.message)
+}
