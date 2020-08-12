@@ -1,36 +1,38 @@
-import parseArguments from './argParser'
+import parseArguments from './argParser';
 
 const bmiCalculator = (height: number, weight: number): string => {
-  const heightSquared = (height / 100) ^ 2
-  const result = weight / heightSquared
+
+  const heightSquared = (height / 100) ^ 2;
+  const result = weight / heightSquared;
 
   switch (true) {
     case (result < 15):
-      return 'Very severely underweight'
+      return 'Very severely underweight';
     case (result < 16):
-      return 'Severely underweight'
+      return 'Severely underweight';
     case (result < 18.5):
-      return 'Underweight'
+      return 'Underweight';
     case (result < 25):
-      return 'Normal (healthy weight)'
+      return 'Normal (healthy weight)';
     case (result < 30):
-      return 'Overweight'
+      return 'Overweight';
     case (result < 35):
-      return 'Obese Class I (Moderately obese)'
+      return 'Obese Class I (Moderately obese)';
     case (result < 40):
-      return 'Obese Class II (Severely obese)'
+      return 'Obese Class II (Severely obese)';
     case (result > 40):
-      return 'Obese Class III (Very severely'
+      return 'Obese Class III (Very severely';
     default:
-      throw new Error('Encountered an unexpected error')
+      throw new Error('Encountered an unexpected error');
   }
-}
+};
 
 try {
-  const values = parseArguments(process.argv)
-  console.log(bmiCalculator(values.height, values.weight))
+  const values = parseArguments(process.argv);
+  console.log(bmiCalculator(values.height, values.weight));
 } catch (e) {
-  console.log('Error: ', e.message)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  console.log('Error: ', e.message);
 }
 
-export { bmiCalculator }
+export { bmiCalculator };

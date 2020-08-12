@@ -62,3 +62,5 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   console.log('Error: ', e.message);
 }
+
+export { calculateExercises, Feedback };
