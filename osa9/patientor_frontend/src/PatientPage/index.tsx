@@ -1,14 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useStateValue, setPatient } from '../state';
+import { useStateValue, setPatient, setDiagnosisList } from '../state';
 import { Header, Icon, List } from 'semantic-ui-react';
-import { Patient } from '../types';
+import { Patient, Diagnosis } from '../types';
 import axios from 'axios';
 import { apiBaseUrl } from "../constants";
+import EntryList from './EntryList';
 
 
 const PatientPage = () => {
-  const [{ patient }, dispatch] = useStateValue();
+  const [{ patient, diagnoses }, dispatch] = useStateValue();
 
   const { id } = useParams<{ id: string }>();
 
@@ -25,15 +26,65 @@ const PatientPage = () => {
           console.error(e);
         }
       };
-
       fetchPatient();
     }
 
-  }, [dispatch, id, patient]);
+    if (!diagnoses) {
+      const fetchDiagnoses = async () => {
+        try {
+          const { data: diagnosisListFromApi } = await axios.get<Diagnosis[]>(
+            `${apiBaseUrl}/diagnoses`
+          );
+          dispatch(setDiagnosisList(diagnosisListFromApi));
+        } catch (e) {
+          console.error(e);
+        }
+      };
+
+      fetchDiagnoses();
+    }
+
+  }, [dispatch, id, patient, diagnoses]);
 
   if (!patient) {
     return <div>patient not found</div>;
   }
+
+  // const entryList = () => {
+  //   if (patient.entries.length < 1) {
+  //     return (
+  //       <p>no entries</p>
+  //     );
+  //   }
+
+  //   const entries = patient.entries.map(entry => {
+  //     let diagnosisCodes;
+
+  //     if (entry.diagnosisCodes) {
+  //       diagnosisCodes = entry.diagnosisCodes.map(c => {
+  //         let diagnose;
+
+  //         if (Object.values(diagnoses).length > 0) {
+  //           diagnose = diagnoses[c].name;
+  //         }
+
+  //         return (
+  //           <List.Item key={c}>{c} {diagnose}</List.Item>);
+  //       });
+  //     }
+
+  //     return (
+  //       <div key={entry.description}>
+  //         <p>{entry.date} <i>{entry.description}</i></p>
+  //         <List>
+  //           {diagnosisCodes ? diagnosisCodes : null}
+  //         </List>
+  //       </div>
+  //     );
+  //   });
+
+  //   return <List>{entries}</List>;
+  // };
 
   const genderIcon = () => {
     switch (patient.gender) {
@@ -56,6 +107,8 @@ const PatientPage = () => {
         `occupation: ${patient.occupation}`,
         `date of birth: ${patient.dateOfBirth}`
       ]} />
+      <Header as={"h3"}>entries</Header>
+      <EntryList entries={patient.entries} />
     </div>
   );
 };

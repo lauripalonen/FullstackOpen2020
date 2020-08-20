@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender } from './types';
+import { NewPatient, Gender, Entry } from './types';
 
 const toNewPatient = (object: any): NewPatient => {
   if (!objectIsPatient(object)) {
@@ -12,7 +12,7 @@ const toNewPatient = (object: any): NewPatient => {
     ssn: parseSsn(object.ssn),
     occupation: parseOccupation(object.occupation),
     gender: parseGender(object.gender),
-    entries: []
+    entries: parseEntries(object.entries)
   };
 
   return newPatient;
@@ -88,5 +88,26 @@ const isGender = (param: any): param is Gender => {
   return Object.values(Gender).includes(param);
 };
 
+const parseEntries = (object: any): Entry[] => {
+  const entries = object as Entry[];
+  if (!entries) {
+    throw new Error('no entries');
+  }
+
+  entries.forEach(entry => {
+    if (!entry.type) {
+      throw new Error("missing entry type");
+    }
+
+    if (!(entry.type === 'HealthCheck'
+      || entry.type === 'Hospital'
+      || entry.type === 'OccupationalHealthcare')) {
+      throw new Error("incorrect entry type");
+    }
+  });
+
+  return entries;
+};
 
 export default toNewPatient;
+
