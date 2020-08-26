@@ -1,17 +1,41 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useStateValue, setPatient, setDiagnosisList } from '../state';
-import { Header, Icon, List } from 'semantic-ui-react';
-import { Patient, Diagnosis } from '../types';
+import { useStateValue, setPatient, setDiagnosisList, updatePatient } from '../state';
+import { Header, Icon, List, Accordion } from 'semantic-ui-react';
 import axios from 'axios';
 import { apiBaseUrl } from "../constants";
-import EntryList from './EntryList';
 
+import { Patient, Diagnosis, NewEntry, EntryType } from '../types';
+
+import EntryList from './EntryList';
+import AddEntryForm from './AddEntryForm';
 
 const PatientPage = () => {
-  const [{ patient, diagnoses }, dispatch] = useStateValue();
+  const [{ patient, diagnoses, patients }, dispatch] = useStateValue();
+  const [error, setError] = React.useState<string | undefined>();
+  const [activeIndex, setIndex] = React.useState<number>(1);
+  const [entryType, setEntryType] = React.useState<EntryType>(undefined);
 
   const { id } = useParams<{ id: string }>();
+
+  const closeEntryForm = () => {
+    setEntryType(undefined);
+    setError(undefined);
+  };
+
+  const submitNewEntry = async (values: NewEntry) => {
+    const address = `${apiBaseUrl}/patients/${id}/entries`;
+    try {
+      const { data: patient } = await axios.post<Patient>(
+        address, values
+      );
+      dispatch(updatePatient(patient));
+      closeEntryForm();
+    } catch (e) {
+      console.log(e.response.data);
+      setError(e.response.data);
+    }
+  };
 
   React.useEffect(() => {
     if (!patient || patient.id !== id) {
@@ -21,6 +45,7 @@ const PatientPage = () => {
           const { data: patientFromApi } = await axios.get<Patient>(
             `${apiBaseUrl}/patients/${id}`
           );
+
           dispatch(setPatient(patientFromApi));
         } catch (e) {
           console.error(e);
@@ -44,47 +69,11 @@ const PatientPage = () => {
       fetchDiagnoses();
     }
 
-  }, [dispatch, id, patient, diagnoses]);
+  }, [dispatch, id, patient, diagnoses, patients]);
 
   if (!patient) {
     return <div>patient not found</div>;
   }
-
-  // const entryList = () => {
-  //   if (patient.entries.length < 1) {
-  //     return (
-  //       <p>no entries</p>
-  //     );
-  //   }
-
-  //   const entries = patient.entries.map(entry => {
-  //     let diagnosisCodes;
-
-  //     if (entry.diagnosisCodes) {
-  //       diagnosisCodes = entry.diagnosisCodes.map(c => {
-  //         let diagnose;
-
-  //         if (Object.values(diagnoses).length > 0) {
-  //           diagnose = diagnoses[c].name;
-  //         }
-
-  //         return (
-  //           <List.Item key={c}>{c} {diagnose}</List.Item>);
-  //       });
-  //     }
-
-  //     return (
-  //       <div key={entry.description}>
-  //         <p>{entry.date} <i>{entry.description}</i></p>
-  //         <List>
-  //           {diagnosisCodes ? diagnosisCodes : null}
-  //         </List>
-  //       </div>
-  //     );
-  //   });
-
-  //   return <List>{entries}</List>;
-  // };
 
   const genderIcon = () => {
     switch (patient.gender) {
@@ -99,6 +88,10 @@ const PatientPage = () => {
     }
   };
 
+  const handleClick = () => {
+    setIndex(activeIndex === 0 ? -1 : 0);
+  };
+
   return (
     <div>
       <Header as={"h2"}>{patient.name} <Icon name={genderIcon()} /></Header>
@@ -109,6 +102,22 @@ const PatientPage = () => {
       ]} />
       <Header as={"h3"}>entries</Header>
       <EntryList entries={patient.entries} />
+      <Accordion styled>
+        <Accordion.Title
+          active={activeIndex === 0}
+          index={0}
+          onClick={handleClick}
+        >Add new entry
+        </Accordion.Title>
+        <Accordion.Content active={activeIndex === 0}>
+          <AddEntryForm
+            onSubmit={submitNewEntry}
+            error={error}
+            setError={setError}
+            entryType={entryType}
+            setEntryType={setEntryType} />
+        </Accordion.Content>
+      </Accordion>
     </div>
   );
 };

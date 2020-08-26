@@ -1,7 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender, Entry } from './types';
+import {
+  NewPatient,
+  Gender,
+  Entry,
+  HealthCheckRating,
+  Diagnose,
+  HealthCheckEntry,
+  HospitalEntry,
+  OccupationalHealthcareEntry,
+  SickLeave,
+  Discharge,
+  NewEntry
+} from './types';
 
-const toNewPatient = (object: any): NewPatient => {
+export const toNewPatient = (object: any): NewPatient => {
   if (!objectIsPatient(object)) {
     throw new Error('Object is malformatted');
   }
@@ -12,7 +24,7 @@ const toNewPatient = (object: any): NewPatient => {
     ssn: parseSsn(object.ssn),
     occupation: parseOccupation(object.occupation),
     gender: parseGender(object.gender),
-    entries: parseEntries(object.entries)
+    entries: []
   };
 
   return newPatient;
@@ -88,26 +100,156 @@ const isGender = (param: any): param is Gender => {
   return Object.values(Gender).includes(param);
 };
 
-const parseEntries = (object: any): Entry[] => {
-  const entries = object as Entry[];
-  if (!entries) {
-    throw new Error('no entries');
+// const parseEntries = (object: any): Entry[] => {
+//   const entries = object as Entry[];
+//   if (!entries) {
+//     throw new Error('no entries');
+//   }
+
+//   entries.forEach(entry => {
+//     if (!entry.type) {
+//       throw new Error("missing entry type");
+//     }
+
+//     if (!(entry.type === 'HealthCheck'
+//       || entry.type === 'Hospital'
+//       || entry.type === 'OccupationalHealthcare')) {
+//       throw new Error("incorrect entry type");
+//     }
+//   });
+
+//   return entries;
+// };
+
+export const toNewEntry = (object: any): NewEntry => {
+  const entry = object as Entry;
+  if (!entry) {
+    throw new Error('No entry');
   }
 
-  entries.forEach(entry => {
-    if (!entry.type) {
-      throw new Error("missing entry type");
-    }
+  if (!isEntry(entry)) {
+    throw new Error('Malformatted entry');
+  }
 
-    if (!(entry.type === 'HealthCheck'
-      || entry.type === 'Hospital'
-      || entry.type === 'OccupationalHealthcare')) {
-      throw new Error("incorrect entry type");
+  if (!entry.type) {
+    throw new Error('Missing entry type');
+  }
+
+  if (entry.type === 'HealthCheck') {
+    if (!isHealthCheckEntry(entry)) {
+      throw new Error('Malformatted health check entry');
+    }
+  }
+
+  if (entry.type === 'Hospital') {
+    if (!isHospitalEntry(entry)) {
+      throw new Error('Malformatted hospital entry');
+    }
+  }
+
+  if (entry.type === 'OccupationalHealthcare') {
+    if (!isOccupationalHealthcareEntry(entry)) {
+      throw new Error('Malformatted occupational healthcare entry');
+    }
+  }
+
+  return entry;
+};
+
+const isEntry = (object: any): object is Entry => {
+  const { type, description, date, specialist, diagnosisCodes } = object as Entry;
+  if (
+    !isEntryType(type) ||
+    !isString(description) ||
+    !isDate(date) ||
+    !isString(specialist)
+  ) {
+    throw new Error('malformatted entry');
+  }
+
+  if (diagnosisCodes) {
+    if (!isStringArray(diagnosisCodes)) {
+      throw new Error('malformatted diagnosis codes');
+    }
+  }
+
+  return true;
+};
+
+const isEntryType = (object: any): boolean => {
+  return (object === 'Hospital' || object === 'HealthCheck' || object === 'OccupationalHealthcare');
+};
+
+const isHealthCheckEntry = (object: any): object is HealthCheckEntry => {
+  const { type, healthCheckRating } = object as HealthCheckEntry;
+
+  if (
+    type != 'HealthCheck' ||
+    !isHealthCheckRating(healthCheckRating)
+  ) {
+    throw new Error('invalid health check entry');
+  }
+
+  return true;
+};
+
+const isHealthCheckRating = (param: any): param is HealthCheckRating => {
+  return Object.values(HealthCheckRating).includes(param);
+};
+
+const isOccupationalHealthcareEntry = (object: any): object is OccupationalHealthcareEntry => {
+  const { type, employerName, sickLeave } = object as OccupationalHealthcareEntry;
+  if (
+    type != 'OccupationalHealthcare' ||
+    !isString(employerName) ||
+    !isSickLeave(sickLeave)
+  ) {
+    return false;
+  }
+  return true;
+};
+
+const isHospitalEntry = (object: any): object is HospitalEntry => {
+  const { type, discharge } = object as HospitalEntry;
+  if (
+    type != 'Hospital' ||
+    !isDischarge(discharge)
+  ) {
+    return false;
+  }
+
+  return true;
+};
+
+const isDischarge = (object: any): object is Discharge => {
+  const { date, criteria } = object as Discharge;
+  if (
+    !isString(date) ||
+    !isString(criteria)
+  ) {
+    return false;
+  }
+
+  return true;
+};
+
+const isStringArray = (object: any): object is Array<string> => {
+  const diagnosisCodes = object as Array<Diagnose['code']>;
+  let objectIsStringArray = true;
+  diagnosisCodes.forEach(code => {
+    if (!isString(code)) {
+      objectIsStringArray = false;
     }
   });
 
-  return entries;
+  return objectIsStringArray;
 };
 
-export default toNewPatient;
+const isSickLeave = (object: any): object is SickLeave => {
+  const { startDate, endDate } = object as SickLeave;
+  if (!isString(startDate) || !isString(endDate)) {
+    return false;
+  }
 
+  return true;
+};

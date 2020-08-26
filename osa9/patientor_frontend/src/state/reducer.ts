@@ -17,9 +17,14 @@ export type Action =
   | {
     type: "SET_DIAGNOSIS_LIST";
     payload: Diagnosis[];
+  }
+  | {
+    type: "UPDATE_PATIENT";
+    payload: Patient;
   };
 
 export const reducer = (state: State, action: Action): State => {
+  console.log('REDUCER IN ACTION: ', action.type);
   switch (action.type) {
     case "SET_PATIENT_LIST":
       return {
@@ -56,6 +61,16 @@ export const reducer = (state: State, action: Action): State => {
           ...state.diagnoses
         }
       };
+    case "UPDATE_PATIENT":
+      const patient = action.payload;
+      return {
+        ...state,
+        patient: action.payload,
+        patients: {
+          ...state.patients,
+          [patient.id]: patient
+        }
+      };
     default:
       return state;
   }
@@ -89,4 +104,11 @@ const setDiagnosisList = (diagnoseListFromApi: Diagnosis[]): Action => {
   };
 };
 
-export { setPatientList, addPatient, setPatient, setDiagnosisList };
+const updatePatient = (patient: Patient): Action => {
+  return {
+    type: "UPDATE_PATIENT",
+    payload: patient
+  };
+};
+
+export { setPatientList, addPatient, setPatient, setDiagnosisList, updatePatient };
