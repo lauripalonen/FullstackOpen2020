@@ -6,5 +6,5 @@ Course page: https://fullstackopen.com
 [Part 5](osa5/bloglist-frontend)  
 [Part 6](osa6/)  
 [Part 7](osa6/)  
-[Part 8](osa8/)
+[Part 8](osa8/)  
 [Part 9](osa9/)
